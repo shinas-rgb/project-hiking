@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'After';
+  src: url('./assets/fonts/after-regular.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CanvaSans-Regular';
+  src: url('./assets/fonts/CanvaSans-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CanvaSans-Medium';
+  src: url('./assets/fonts/CanvaSans-Medium.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CanvaSans-Bold';
+  src: url('./assets/fonts/CanvaSans-Bold.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  margin: 0;
+  background-color: #faf8ff;
+}
+
+h1 {
+  font-family: 'CanvaSans-Bold', sans-serif;
+  letter-spacing: 1px;
+}
+
+.page {
+  height: 100vh;
+}
+
+.first-section {
+  max-height: 100vh;
+}
+
+.hero {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-title {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0;
+}
+
+.hero-para {
+  display: flex;
+  font-family: 'CanvaSans-Regular', sans-serif;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+}
+
+.search-bar {
+  display: flex;
+  margin-top: 1rem;
+  border: 2px solid grey;
+  width: fit-content;
+  border-radius: 2rem;
+  padding: 0.5rem 1rem;
+
+  input {
+    border: none;
+
+  }
+
+  input:focus {
+    border: none;
+    outline: none;
+  }
+}
+
+.search-icon {
+  width: 25px;
+}
+
+.place-container {
+  border-radius: 1rem;
+}
+
+.place-card {
+  box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.49);
+  border-radius: 1rem;
+  padding-bottom: 1rem;
+}
+
+.place-image {
+  object-fit: cover;
+  height: 300px;
+  width: 100%;
+  border-top-right-radius: 1rem;
+  border-top-left-radius: 1rem;
+}
+
+.form-container {
+  padding: 2rem;
+  background-color: white;
+  border-radius: 1rem;
+}
+
+.new-form {
+  input:focus {
+    outline: none;
+    background-color: #b1bdc5;
+  }
+
+  textarea:focus {
+    outline: none;
+    background-color: #b1bdc5;
+  }
+
+  color: black;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  button {
+    /* background-color: blue; */
+  }
+}
+
+.input-field {
+  border: 2px solid grey;
+  padding: 2px 0;
+  padding-left: 6px;
+  border-radius: 1rem;
+  background-color: #dadde2;
+  outline: none;
+
+  input:focus {
+    outline: none;
+    background-color: #b1bdc5;
+  }
+}
