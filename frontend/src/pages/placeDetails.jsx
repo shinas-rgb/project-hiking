@@ -29,7 +29,7 @@ export default function PlaceDetails() {
       }
     }
     fetchPlace()
-  }, [])
+  }, [place])
 
   const deletePlace = async () => {
     try {
@@ -50,8 +50,8 @@ export default function PlaceDetails() {
         link: data.link || place.link
       })
         .then((response) => toast.success(response.data.message))
+      setEdit(false)
       setLoading(false)
-      window.location.reload()
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
       toast.error(message)

@@ -5,7 +5,7 @@ import { adminOnly } from "../middleware/adminMinddleware.js";
 
 const router = express.Router()
 
-router.get('/', protect, getPlaces)
+router.get('/', getPlaces)
 router.post('/', protect, adminOnly, createPlace)
 router.delete('/:id', protect, adminOnly, deletePlace)
 router.get('/:id', protect, getPlaceById)

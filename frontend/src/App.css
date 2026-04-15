@@ -82,10 +82,11 @@ h1 {
 
   }
 
-  input:focus {
-    border: none;
-    outline: none;
-  }
+}
+
+input:focus {
+  border: none;
+  outline: none;
 }
 
 .search-icon {
@@ -149,4 +150,11 @@ h1 {
     outline: none;
     background-color: #b1bdc5;
   }
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+  border-collapse: collapse;
 }
