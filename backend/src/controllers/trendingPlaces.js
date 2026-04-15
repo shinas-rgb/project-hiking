@@ -43,7 +43,7 @@ export const updatePlace = async (req, res) => {
       }
     )
     if (!updatePlace) return res.status(404).json({ message: "Place not found" })
-    res.status(200).json(updatePlace)
+    res.status(200).json({ message: "Place updated successfully", updatePlace })
   } catch (error) {
     res.status(500).send("Internal server error")
   }
@@ -58,3 +58,5 @@ export async function deletePlace(req, res) {
     res.status(500).send("Internal server error")
   }
 }
+
+// Search Function 
