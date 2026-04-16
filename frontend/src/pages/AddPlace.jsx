@@ -3,15 +3,15 @@ import toast, { Toaster } from "react-hot-toast"
 import api from "../api/api"
 
 export default function AddPlace() {
-  const { register, handleSubmit, formState: { errors } } = useForm()
+  const { register, handleSubmit } = useForm()
   async function onSubmit(data) {
     try {
-      await api.post("/place", {
+      const res = await api.post("/place", {
         title: data.name,
         content: data.content,
         link: data.link
       })
-        .then((response) => toast.success(response.data))
+      toast.success(res.data)
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
       toast.error(message)
@@ -34,7 +34,7 @@ export default function AddPlace() {
             {...register('content', { required: 'Content of Place is Required' })} />
           <input
             className="input-field"
-            type="link"
+            type="url"
             placeholder="link of image"
             {...register('link', { required: 'Link of Image is Required' })} />
           <button className="bg-blue-500 h-8 rounded-xl hover:cursor-pointer hover:bg-blue-600 text-white" type="submit">Submit</button>

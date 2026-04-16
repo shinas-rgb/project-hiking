@@ -60,3 +60,17 @@ export async function deletePlace(req, res) {
 }
 
 // Search Function 
+export async function searchPlace(req, res) {
+  try {
+    const search = req.query.search || ""
+    const places = await Place.find({
+      title: {
+        $regex: search,
+        $options: "i"
+      }
+    })
+    res.status(200).json(places)
+  } catch (error) {
+    res.status(500).send("Internal server error")
+  }
+}

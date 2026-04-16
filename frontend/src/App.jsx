@@ -7,6 +7,7 @@ import PlaceDetails from './pages/placeDetails'
 import UserProfile from './components/UserProfile'
 import AdminPanel from './pages/AdminPanel'
 import ProtectedRoute from './route/ProtectedRoute'
+import SearchPlaces from './components/SearchPlaces.jsx'
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       </Route>
       <Route path='/' element={<HomePage />} />
       <Route path='/auth' element={<AuthPage />} />
+      <Route path='/search' element={<SearchPlaces />} />
     </Routes>
   )
 }

@@ -3,12 +3,13 @@ import Navbar from '../components/Navbar.jsx'
 import SearchBar from "../components/SearchBar.jsx"
 
 export default function HomePage() {
+
   return (
     <div
       className='page'>
       < section className='first-section' >
         <Navbar />
-        <SearchBar/>
+        <SearchBar />
       </section >
       <TrendingPosts />
     </div >
