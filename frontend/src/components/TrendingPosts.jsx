@@ -24,7 +24,7 @@ export default function TrendingPosts() {
       {loading && <h1>Loading....</h1>}
       {places.length > 0 && (
         <div className="place-container
-          grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:justify-around  gap-8 m-8
+          grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:justify-around  gap-8 m-8 pb-8
           ">
           {places.map((place) => (
             <div className="place-card bg-gray-900" key={place._id}>

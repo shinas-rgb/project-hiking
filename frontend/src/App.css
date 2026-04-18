@@ -66,7 +66,6 @@ h2 {
 }
 
 input:focus {
-  border: none;
   outline: none;
 }
 
@@ -100,7 +99,6 @@ input:focus {
 
 .new-form {
   input:focus {
-    outline: none;
     background-color: #b1bdc5;
   }
 
@@ -112,7 +110,7 @@ input:focus {
   color: black;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  /* gap: 1rem; */
 
   button {
     /* background-color: blue; */
@@ -121,16 +119,11 @@ input:focus {
 
 .input-field {
   border: 2px solid grey;
-  padding: 2px 0;
+  /* padding: 2px 0; */
   padding-left: 6px;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
   background-color: #dadde2;
-  outline: none;
 
-  input:focus {
-    outline: none;
-    background-color: #b1bdc5;
-  }
 }
 
 table,

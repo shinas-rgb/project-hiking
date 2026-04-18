@@ -16,7 +16,7 @@ export default function Navbar() {
 
   return (
     <div>
-      <div className='hero mt-4'>
+      <div className='hero mt-4 max-sm:text-xs'>
         <div className="flex justify-between mx-8">
           <Link to="/">
             <h1 className='text-xl'>TREK WIKI</h1>
@@ -37,8 +37,7 @@ export default function Navbar() {
           )}
         </div>
       </div>
-      <SearchBar />
-
+      {/* <SearchBar /> */}
     </div >
   )
 }

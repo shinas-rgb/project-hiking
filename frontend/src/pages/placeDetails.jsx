@@ -64,13 +64,13 @@ export default function PlaceDetails() {
         : (
           <div className="m-8 text-white">
             <div className="h-fit py-4">
-              <div className="flex flex-col gap-8">
-                <h1 className="text-4xl">{place.title}</h1>
-                <div className="flex gap-4 w-full">
-                  <p className="w-3/4">{place.description}</p>
+              <div className="flex flex-col gap-8 max-sm:gap-2">
+                <h1 className="text-4xl max-sm:text-2xl">{place.title}</h1>
+                <div className="flex gap-4 w-full max-sm:flex-col">
+                  <p className="w-3/4 max-sm:w-full">{place.description}</p>
                   <img src={place.images[0]} alt="" />
                 </div>
-                <div className="flex justify-around my-4">
+                <div className="flex justify-around my-4 max-sm:flex-col max-sm:gap-4">
                   <img src={place.images[1]} alt="" />
                   <img src={place.images[2]} alt="" />
                 </div>
@@ -97,7 +97,7 @@ export default function PlaceDetails() {
                 <h2 className="text-2xl">Tips</h2>
                 <ul className="mt-4">
                   {place.tips.map((tip) => (
-                    <li key={place._id}>{tip}</li>
+                    <li key={tip}>{tip}</li>
                   ))}
                 </ul>
               </div>

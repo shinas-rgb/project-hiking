@@ -4,6 +4,7 @@ import api from "../api/api"
 import { useState } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import Navbar from "./Navbar"
+import SearchBar from "./SearchBar"
 
 export default function SearchPlaces() {
   const [places, setPlaces] = useState([])
@@ -45,35 +46,51 @@ export default function SearchPlaces() {
     <div>
       <div className="w-screen">
         <Navbar />
+        <SearchBar />
         {loading && (<h1>Loading</h1>)}
-        <div className="text-white flex gap-4 mb-4">
-          <form className="flex gap-2">
+        <div className="text-white grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-4 justify-around mb-4 mt-8 ml-8
+          grid-cols-2 max-sm:text-xs">
+          <form className="flex gap-2 items-center">
             <label>Difficulty:</label>
-            <select onChange={handleChange} className="select-bar bg-gray-700 p-2 text-sm" name="difficulty">
+            <select onChange={handleChange} className="select-bar bg-gray-700 p-2 sm:text-sm" name="difficulty">
               <option value="">All Difficulty</option>
               <option value="Easy">Easy</option>
               <option value="Moderate">Moderate</option>
               <option value="Hard">Hard</option>
             </select>
           </form>
-          <form className="flex gap-2">
+          <form className="flex gap-2 items-center">
             <label>Season:</label>
-            <select onChange={handleChange} className="select-bar bg-gray-700 p-2 text-sm" name="bestSeason">
+            <select onChange={handleChange} className="select-bar bg-gray-700 p-2 sm:text-sm" name="bestSeason">
               <option value="">All Seasons</option>
               <option value="Summer">Summer</option>
               <option value="Winter">Winter</option>
               <option value="Monsoon">Monsoon</option>
             </select>
           </form>
+          <form className="flex gap-2 items-center">
+            <label>District:</label>
+            <select onChange={handleChange} className="select-bar bg-gray-700 p-2 sm:text-sm" name="district">
+              <option value="">All Districts</option>
+              <option value="Wayanad">Wayanad</option>
+              <option value="Idukki">Idukki</option>
+              <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+              <option value="Thirunalveli">Thirunalveli</option>
+              <option value="Theni">Theni</option>
+              <option value="Eranakulam">Eranakulam</option>
+            </select>
+          </form>
         </div>
         {trending && (
           <h1>Trending Places</h1>
         )}
-        <div className="grid grid-cols-4 justify-around gap-4 p-4">
+        <div className="4 justify-around gap-4 
+          grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:justify-around  m-8 
+          grid-cols-2">
           {places.length > 0 &&
             places.map((place) => (
               <div className="" key={place._id}>
-                <img className="rounded-t-2xl object-cover w-full h-96" src={place.images[0]} alt="" />
+                <img className="rounded-t-2xl object-cover w-full sm:h-96 h-28" src={place.images[0]} alt="" />
                 <Link to={`/place/${place._id} `} > <h2 className="text-gray-400 font-bold ml-2 mt-2 hover:cursor-pointer">{place.title}</h2></Link>
               </div>
             ))}
