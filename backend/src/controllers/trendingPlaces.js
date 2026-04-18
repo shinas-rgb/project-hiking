@@ -22,11 +22,11 @@ export const getPlaceById = async (req, res) => {
 
 export const createPlace = async (req, res) => {
   try {
-    const { title, content, link } = req.body
-    const newPlace = new Place({ title, content, link })
+    const { title, description, images, features, location, difficulty, bestSeason, season, bestTime, route, tips, duration, distance, trending } = req.body
+    const newPlace = new Place({ title, description, features, images, location, difficulty, bestSeason, season, bestTime, route, tips, duration, distance, trending })
 
     await newPlace.save()
-    res.status(201).json({ message: "Note created" })
+    res.status(201).json({ message: "New Place created" })
   } catch (error) {
     res.status(500).send("Internal server error")
   }
@@ -34,10 +34,10 @@ export const createPlace = async (req, res) => {
 
 export const updatePlace = async (req, res) => {
   try {
-    const { title, content, link } = req.body
+    const { bestSeason, difficulty } = req.body
     const updatePlace = await Place.findByIdAndUpdate(
       req.params.id,
-      { title, content, link },
+      { bestSeason },
       {
         new: true,
       }
@@ -62,14 +62,36 @@ export async function deletePlace(req, res) {
 // Search Function 
 export async function searchPlace(req, res) {
   try {
-    const search = req.query.search || ""
-    const places = await Place.find({
-      title: {
-        $regex: search,
-        $options: "i"
-      }
-    })
-    res.status(200).json(places)
+    const { q, trending, difficulty, bestSeason, hDuration, lDuration, hDistance, lDistance } = req.query
+
+    let query = {}
+
+    if (q) query.title = {
+      $regex: q,
+      $options: "i"
+    }
+    if (difficulty) query.difficulty = {
+      $regex: difficulty,
+      $options: "i"
+    }
+    if (bestSeason) query.bestSeason = {
+      $regex: bestSeason,
+      $options: "i"
+    }
+    if (hDuration || lDuration) {
+      query.duration = {}
+      if (lDuration) query.duration.$gte = lDuration
+      if (hDuration) query.duration.$lte = hDuration
+    }
+    if (hDistance || lDistance) {
+      query.distance = {}
+      if (lDistance) query.distance.$gte = lDistance
+      if (hDistance) query.distance.$lte = hDistance
+    }
+    if (trending) query.trending = trending === 'true' ? true : false
+
+    const places = await Place.find(query)
+    res.status(200).json({ places, trending })
   } catch (error) {
     res.status(500).send("Internal server error")
   }

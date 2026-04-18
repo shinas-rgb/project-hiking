@@ -30,20 +30,21 @@
 
 body {
   margin: 0;
-  background-color: #faf8ff;
+  background-color: #161518;
 }
 
 h1 {
   font-family: 'CanvaSans-Bold', sans-serif;
   letter-spacing: 1px;
+  color: white;
+}
+
+h2 {
+  font-family: 'CanvaSans-Bold', sans-serif;
 }
 
 .page {
   height: 100vh;
-}
-
-.first-section {
-  max-height: 100vh;
 }
 
 .hero {
@@ -62,26 +63,6 @@ h1 {
   font-family: 'CanvaSans-Regular', sans-serif;
   justify-content: center;
   margin-top: 0.5rem;
-}
-
-.search-container {
-  display: flex;
-  justify-content: center;
-}
-
-.search-bar {
-  display: flex;
-  margin-top: 1rem;
-  border: 2px solid grey;
-  width: fit-content;
-  border-radius: 2rem;
-  padding: 0.5rem 1rem;
-
-  input {
-    border: none;
-
-  }
-
 }
 
 input:focus {

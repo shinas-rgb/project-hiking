@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { checkUser } from "../utils/auth";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import SearchBar from "../components/SearchBar.jsx"
 
 export default function Navbar() {
   const [user, setUser] = useState(checkUser())
@@ -18,15 +19,14 @@ export default function Navbar() {
       <div className='hero mt-4'>
         <div className="flex justify-between mx-8">
           <Link to="/">
-            <h2 className="rounded-xl hover:cursor-pointer">Home</h2>
+            <h1 className='text-xl'>TREK WIKI</h1>
           </Link>
-          <h1 className='hero-title text-4xl'>Kerala Hike & Truk</h1>
           {user &&
             user.email ? (
             <div className="flex gap-8">
-              <button className="text-x mb-8 hover:cursor-pointer" onClick={logoutUser}>Logout</button>
+              <button className="text-x mb-8 hover:cursor-pointer text-white" onClick={logoutUser}>Logout</button>
               <Link to="/profile">
-                <button className="hover:cursor-pointer">{user.email.split('@')[0]}
+                <button className="hover:cursor-pointer text-white">{user.email.split('@')[0]}
                 </button>
               </Link>
             </div>
@@ -36,9 +36,9 @@ export default function Navbar() {
             </Link>
           )}
         </div>
-        <p className='hero-para'>Descover Kerala's hidden and adventurous trucking spots</p>
       </div>
+      <SearchBar />
 
-    </div>
+    </div >
   )
 }

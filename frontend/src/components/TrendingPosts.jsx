@@ -27,9 +27,11 @@ export default function TrendingPosts() {
           grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:justify-around  gap-8 m-8
           ">
           {places.map((place) => (
-            <div className="place-card" key={place._id}>
-              <img className="place-image" src={place.link} alt="" />
-              <Link to={`/place/${place._id}`} > <h2 className="font-bold ml-2 mt-2 hover:cursor-pointer">{place.title}</h2></Link>
+            <div className="place-card bg-gray-900" key={place._id}>
+              <img className="place-image" src={place.images[0]} alt="" />
+              <Link to={`/place/${place._id}`} >
+                <h2 className="font-bold text-gray-400 ml-2 mt-2 hover:cursor-pointer">{place.title}</h2>
+              </Link>
             </div>
           ))
           }

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import api from "../api/api.js"
-import { useNavigate, useParams } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import toast from "react-hot-toast"
 import { checkUser } from "../utils/auth.js"
 import { useForm } from "react-hook-form"
@@ -60,54 +60,51 @@ export default function PlaceDetails() {
   return (
     <div>
       <Navbar />
-      <div className="h-screen flex justify-center items-center">
-        <div className="flex justify-evenly w-full items-center">
-          {loading ? 'Loading...'
-            : (
-              < div className="bg-rose-500 w-fit p-8 flex flex-col gap-8 rounded-2xl">
-                <div className="flex justify-between">
-                  <h1 className="text-2xl">{place && `${place.title}`}</h1>
-                  {user.role === 'admin' &&
-                    <button onClick={() => setEdit(!edit)}>
-                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"
-                        className="w-8"><path d="M416.9 85.2L372 130.1L509.9 268L554.8 223.1C568.4 209.6 576 191.2 576 172C576 152.8 568.4 134.4 554.8 120.9L519.1 85.2C505.6 71.6 487.2 64 468 64C448.8 64 430.4 71.6 416.9 85.2zM338.1 164L122.9 379.1C112.2 389.8 104.4 403.2 100.3 417.8L64.9 545.6C62.6 553.9 64.9 562.9 71.1 569C77.3 575.1 86.2 577.5 94.5 575.2L222.3 539.7C236.9 535.6 250.2 527.9 261 517.1L476 301.9L338.1 164z" /></svg>
-                    </button>
-                  }
+      {loading ? 'Loading...'
+        : (
+          <div className="m-8 text-white">
+            <div className="h-fit py-4">
+              <div className="flex flex-col gap-8">
+                <h1 className="text-4xl">{place.title}</h1>
+                <div className="flex gap-4 w-full">
+                  <p className="w-3/4">{place.description}</p>
+                  <img src={place.images[0]} alt="" />
                 </div>
-                <div className="flex gap-18">
-                  <p>{place.content}</p>
-                  <img className="place-image" src={place.link} alt="" />
+                <div className="flex justify-around my-4">
+                  <img src={place.images[1]} alt="" />
+                  <img src={place.images[2]} alt="" />
                 </div>
-                {user.role === 'admin' && (
-                  <button className=" bg-white w-fit px-3 py-2 rounded-2xl text-red-600" onClick={deletePlace}>DELETE</button>
-                )}
+              </div>
+            </div >
+            <div>
+              <h3 className="text-xl italic">{place.title} is a trip of maximum {place.duration} hours and about {place.distance} kilometers</h3>
+              <h3>Coordinates:</h3>
+              <Link to="https://geohack.toolforge.org/geohack.php?pagename=Kolukkumalai&params=10.075_N_77.221_E_type:landmark_region:IN-TN">
+                <h3>{place.location.coordinates[0]}°E {place.location.coordinates[1]}°N</h3>
+              </Link>
+            </div>
+            <div className="mt-8">
+              <h2 className="text-2xl ">Key Details</h2>
+              <ul className="mt-4">
+                <li>Difficulty: {place.difficulty}</li>
+                <li>Best Season: {place.season}</li>
+                <li>Best time: {place.bestTime}</li>
+                <li>Route: {place.route}</li>
+              </ul>
+            </div>
+            {place.tips.length !== 0 && (
+              <div className="mt-8">
+                <h2 className="text-2xl">Tips</h2>
+                <ul className="mt-4">
+                  {place.tips.map((tip) => (
+                    <li key={place._id}>{tip}</li>
+                  ))}
+                </ul>
               </div>
             )}
-          {edit && (
-            <div className="bg-blue-400 h-fit p-8 rounded-2xl">
-              <form onSubmit={handleSubmit(onSubmit)} className="new-form align-text-top">
-                <input
-                  className="input-field"
-                  type="text"
-                  placeholder="Name of place"
-                  onChange={(e) => setTitle(e.target.value)}
-                  {...register('name')} />
-                <textarea
-                  className="input-field h-30"
-                  type="text"
-                  placeholder="Content"
-                  {...register('content')} />
-                <input
-                  className="input-field"
-                  type="link"
-                  placeholder="link of image"
-                  {...register('link')} />
-                <button className="bg-blue-500 h-8 rounded-xl hover:cursor-pointer hover:bg-blue-600 text-white" type="submit">Submit</button>
-              </form>
-            </div>
-          )}
-        </div>
-      </div >
-    </div>
+          </div>
+        )
+      }
+    </div >
   )
 }
