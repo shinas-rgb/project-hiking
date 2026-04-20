@@ -93,7 +93,6 @@ input:focus {
 
 .form-container {
   padding: 2rem;
-  background-color: white;
   border-radius: 1rem;
 }
 
@@ -131,4 +130,14 @@ th,
 td {
   border: 1px solid black;
   border-collapse: collapse;
+}
+
+.panel-div {
+  input {
+    margin-left: 1rem;
+  }
+  label{
+    margin-left: 0.3rem;
+  }
+
 }

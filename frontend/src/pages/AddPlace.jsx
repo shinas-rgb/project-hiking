@@ -3,11 +3,13 @@ import toast, { Toaster } from "react-hot-toast"
 import api from "../api/api"
 import NavBar from "../components/Navbar.jsx"
 import { useState } from "react"
+import { checkUser } from "../utils/auth.js"
 
 export default function AddPlace() {
   const { register, handleSubmit } = useForm()
   const [tips, setTips] = useState([""])
   const [features, setFeatures] = useState([""])
+  const user = checkUser()
 
   async function onSubmit(data) {
     try {
@@ -28,7 +30,8 @@ export default function AddPlace() {
         features: features,
         duration: data.duration,
         distance: data.distance,
-        trending: true
+        trending: true,
+        createdBy: user.id
       })
       toast.success(res.data.message)
     } catch (error) {
@@ -47,14 +50,27 @@ export default function AddPlace() {
     updated[index] = value
     setFeatures(updated)
   }
+  async function updateMany() {
+    try {
+      await api.put("/place", {
+        value: 0.0
+      }).then((response) => toast.success(response.message))
+    } catch (error) {
+      const message = error.response?.data?.message || "Something went wrong"
+      toast.error(message)
+      console.log(error)
+    }
+  }
   return (
     <div>
       <NavBar />
-      <div className="page grid justify-center w-full h-fit my-8">
-        <div className="form-container">
-          <h1 className="text-2xl text-center mb-4 text-green-700 bg-blue-500">Add A Place</h1>
+      <button className="text-white m-8 hover:cursor-pointer" onClick={updateMany}>Update</button>
+      <div className=" grid justify-center w-fit mx-4 mb-8 sm:w-full">
+        <div className="form-container bg-gray-300">
+          <h1 className="text-2xl text-center mb-4 bg-black
+            max-sm:text-xl">Add A Place</h1>
           <form onSubmit={handleSubmit(onSubmit)} className="new-form align-text-top flex gap-2">
-            <div className="flex gap-2">
+            <div className="flex gap-2 max-sm:flex-col">
               <div className="flex flex-col" >
                 <label>Title</label>
                 <input

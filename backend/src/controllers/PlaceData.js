@@ -1,4 +1,4 @@
-import Place from "../models/PlaceData.js"
+import Place from "../models/Place.js"
 
 export const getPlaces = async (req, res) => {
   try {
@@ -22,8 +22,12 @@ export const getPlaceById = async (req, res) => {
 
 export const createPlace = async (req, res) => {
   try {
-    const { title, description, images, features, location, difficulty, bestSeason, season, bestTime, route, tips, duration, distance, trending } = req.body
-    const newPlace = new Place({ title, description, features, images, location, difficulty, bestSeason, season, bestTime, route, tips, duration, distance, trending })
+    const { title, description, images, features, location, difficulty, bestSeason,
+      season, bestTime, route, tips, duration, distance, trending, createdBy } = req.body
+    const newPlace = new Place({
+      title, description, features, images, location, difficulty, bestSeason,
+      season, bestTime, route, tips, duration, distance, trending, createdBy
+    })
 
     await newPlace.save()
     res.status(201).json({ message: "New Place created" })
@@ -34,15 +38,12 @@ export const createPlace = async (req, res) => {
 
 export const updatePlace = async (req, res) => {
   try {
-    const { bestSeason, difficulty } = req.body
-    const updatePlace = await Place.findByIdAndUpdate(
-      req.params.id,
-      { bestSeason },
-      {
-        new: true,
-      }
+    const { value } = req.body
+    const updatePlace = await Place.updateMany(
+      { rating: { $exists: false } },
+      { $set: { rating: value } },
     )
-    if (!updatePlace) return res.status(404).json({ message: "Place not found" })
+    // if (!updatePlace) return res.status(404).json({ message: "Place not found" })
     res.status(200).json({ message: "Place updated successfully", updatePlace })
   } catch (error) {
     res.status(500).send("Internal server error")
@@ -62,7 +63,7 @@ export async function deletePlace(req, res) {
 // Search Function 
 export async function searchPlace(req, res) {
   try {
-    const { q, district, trending, difficulty, bestSeason, hDuration, lDuration, hDistance, lDistance } = req.query
+    const { q, district, trending, difficulty, bestSeason, hDuration, lDuration, hDistance, lDistance, lat, lng, distance } = req.query
 
     let query = {}
 
@@ -92,6 +93,16 @@ export async function searchPlace(req, res) {
     if (district) query.description = {
       $regex: district,
       $options: "i"
+    }
+
+    if (lat && lng && distance) query.location = {
+      $near: {
+        $geometry: {
+          type: 'Point',
+          coordinates: [lat, lng]
+        },
+        $maxDistance: distance
+      }
     }
 
     const places = await Place.find(query)

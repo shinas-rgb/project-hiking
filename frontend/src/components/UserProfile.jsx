@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react"
-import { checkUser } from "../utils/auth"
+import { checkUser } from "../utils/auth.js"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import api from "../api/api.js"
 import { Link } from "react-router-dom"
-import Navbar from "./Navbar.jsx"
+import Navbar from "../components/Navbar.jsx"
 
 export default function UserProfile() {
   const user = checkUser()
@@ -27,23 +27,27 @@ export default function UserProfile() {
 
   return (
     <div>
-      <Navbar/>
-      <div>
+      <Navbar />
+      <div className="mx-4 flex flex-col gap-8">
         <h1>Hello {user.email.split('@')[0]}</h1>
         <button className="bg-gray-300 rounded-xl py-1 px-3" onClick={() => setPass(!pass)}>Change Password</button>
         {pass && (
-          <div className="mt-4">
-            <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
-              <input className="bg-gray-300 w-fit p-2 focus:bg-gray-400 rounded-xs"
-                type="text"
-                placeholder="Old password"
-                {...register("oldPass", { required: "Old password is required" })} />
-              <input className="bg-gray-300 w-fit p-2 focus:bg-gray-400 rounded-xs"
-                type="text"
-                placeholder="New password"
-                {...register("newPass", { required: "New password is required" })} />
-              <button className="bg-blue-300 rounded-xl py-1 px-3 w-fit" type="submit">Submit</button>
-            </form>
+          <div className="flex justify-center">
+            <div className="mt-4 w-fit">
+              <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
+                <input className="bg-gray-300 w-fit p-2 focus:bg-gray-400 rounded-xs"
+                  type="text"
+                  placeholder="Old password"
+                  {...register("oldPass", { required: "Old password is required" })} />
+                <input className="bg-gray-300 w-fit p-2 focus:bg-gray-400 rounded-xs"
+                  type="text"
+                  placeholder="New password"
+                  {...register("newPass", { required: "New password is required" })} />
+                <div className="flex justify-center">
+                  <button className="bg-blue-300 rounded-xl py-1 px-3 w-full" type="submit">Submit</button>
+                </div>
+              </form>
+            </div>
           </div>
         )}
       </div>

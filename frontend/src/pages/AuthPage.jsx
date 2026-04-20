@@ -41,7 +41,7 @@ export default function AuthPage() {
   }
   return (
     <div className="grid justify-center content-center w-full h-screen">
-      <div className="auth-container flex flex-col text-center gap-4">
+      <div className="auth-container flex flex-col text-center gap-2">
         {mode === 'login' ? (
           <h1>Login</h1>
         ) : (
@@ -52,16 +52,16 @@ export default function AuthPage() {
 
           className="new-form align-text-top">
           <input
-            className="input-field"
+            className="input-field max-sm:mb-2"
             type="email"
             placeholder="name@domain.com"
             {...register('email', { required: 'Email is Required' })} />
           <input
-            className="input-field"
+            className="input-field max-sm:mb-2"
             type="password"
             placeholder="password"
             {...register('password', { required: 'Password is required' })} />
-          <button className="bg-blue-500 h-8 rounded-xl hover:cursor-pointer hover:bg-blue-600 text-white" type="submit">
+          <button className="bg-blue-500 h-8 max-sm:mb-2 rounded-xl hover:cursor-pointer hover:bg-blue-600 text-white" type="submit">
             {mode === 'login' ? (
               'Login'
             ) : (
@@ -69,11 +69,11 @@ export default function AuthPage() {
             )}
           </button>
           {mode === 'login' ? (
-            <p className="text-xs">Don't have an account? <a onClick={() => setMode('signup')}
+            <p className="text-xs text-white">Don't have an account? <a onClick={() => setMode('signup')}
               className="text-purple-600 hover:cursor-pointer hover:text-purple-900 hover:underline">
               SignUp</a></p>
           ) : (
-            <p className="text-xs">Already have an account? <a onClick={() => setMode('login')}
+            <p className="text-xs text-white">Already have an account? <a onClick={() => setMode('login')}
               className="text-purple-600 hover:cursor-pointer hover:text-purple-900 hover:underline">
               Login</a></p>
           )}

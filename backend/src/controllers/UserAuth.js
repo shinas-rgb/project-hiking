@@ -12,6 +12,9 @@ export async function createUser(req, res) {
     res.status(201).json({ message: "user created" })
     console.log(newUser)
   } catch (error) {
+    if (error.code === 11000) {
+      return res.status(400).json({ message: "Email already in use" })
+    }
     res.status(500).json({ message: "Internal server error" })
   }
 }
@@ -51,6 +54,8 @@ export async function passwordChange(req, res) {
     const isMatch = await bcrypt.compare(oldPass, user.password)
     if (!isMatch) return res.status(400).json({ message: "incorrect password" })
 
+    if (oldPass === newPass) return res.status(400).json({ message: "Use different password" })
+
     const salt = await bcrypt.genSalt(10)
     const hashedPassword = await bcrypt.hash(newPass, salt)
 
@@ -77,6 +82,23 @@ export async function changeRole(req, res) {
     const user = await User.findOneAndUpdate({ email }, { role }, { returnDocument: 'after' })
     if (!user) return res.status(404).json({ message: "User not found" })
     res.status(201).json({ message: "Role changed successfully", user })
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" })
+  }
+}
+
+export async function deleteUser(req, res) {
+  try {
+    const { id, password } = req.body
+
+    const user = await User.findById(id)
+    if (!user) return res.status(404).json({ message: "User not found" })
+
+    const isMatch = await bcrypt.compare(password, user.password)
+    if (!isMatch) return res.status(400).json({ message: "Password is incorrect" })
+
+    await User.findByIdAndDelete(id)
+    res.status(200).json({ message: "User deleted" })
   } catch (error) {
     res.status(500).json({ message: "Internal server error" })
   }

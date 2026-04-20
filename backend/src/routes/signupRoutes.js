@@ -1,5 +1,5 @@
 import express from "express"
-import { changeRole, createUser, getAllUsers, loginUser, passwordChange } from "../controllers/UserAuth.js"
+import { changeRole, createUser, getAllUsers, loginUser, passwordChange, deleteUser } from "../controllers/UserAuth.js"
 import { protect } from "../middleware/authMiddleware.js"
 import { adminOnly } from "../middleware/adminMinddleware.js";
 
@@ -10,5 +10,6 @@ router.post("/login", loginUser)
 router.put("/profile", passwordChange)
 router.get("/users", protect, adminOnly, getAllUsers)
 router.put("/role", protect, adminOnly, changeRole)
+router.delete("/", protect, deleteUser)
 
 export default router
