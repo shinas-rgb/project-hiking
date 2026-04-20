@@ -50,21 +50,21 @@ export default function AddPlace() {
     updated[index] = value
     setFeatures(updated)
   }
-  async function updateMany() {
-    try {
-      await api.put("/place", {
-        value: 0.0
-      }).then((response) => toast.success(response.message))
-    } catch (error) {
-      const message = error.response?.data?.message || "Something went wrong"
-      toast.error(message)
-      console.log(error)
-    }
-  }
+  // async function updateMany() {
+  //   try {
+  //     await api.put("/place", {
+  //       value: 0.0
+  //     }).then((response) => toast.success(response.message))
+  //   } catch (error) {
+  //     const message = error.response?.data?.message || "Something went wrong"
+  //     toast.error(message)
+  //     console.log(error)
+  //   }
+  // }
   return (
     <div>
       <NavBar />
-      <button className="text-white m-8 hover:cursor-pointer" onClick={updateMany}>Update</button>
+      {/* <button className="text-white m-8 hover:cursor-pointer" onClick={updateMany}>Update</button> */}
       <div className=" grid justify-center w-fit mx-4 mb-8 sm:w-full">
         <div className="form-container bg-gray-300">
           <h1 className="text-2xl text-center mb-4 bg-black

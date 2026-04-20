@@ -4,8 +4,8 @@ import { protect } from "../middleware/authMiddleware.js"
 
 const router = express.Router()
 
-router.get('/place', getReviewsOfPlace)
-router.get('/user', protect, getReviewsOfUser)
+router.get('/place/:id', getReviewsOfPlace)
+router.get('/user/:id', protect, getReviewsOfUser)
 router.post('/', protect, createReview)
 router.delete('/:id', protect, deleteReview)
 router.put('/:id', updateReview)

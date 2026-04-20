@@ -4,7 +4,6 @@ import { checkUser } from "../utils/auth";
 export default function Navbar() {
   const user = checkUser()
 
-
   return (
     <div>
       <div className='hero mt-4 max-sm:text-xs'>
@@ -14,6 +13,12 @@ export default function Navbar() {
           </Link>
           {user ? (
             <div className="flex gap-8 py-2">
+              {user.role === 'admin' && (
+                <Link to="/admin">
+                  <button className="hover:cursor-pointer text-white">Admin
+                  </button>
+                </Link>
+              )}
               <Link to="/profile">
                 <button className="hover:cursor-pointer text-white">Profile
                 </button>

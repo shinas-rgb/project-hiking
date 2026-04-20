@@ -16,34 +16,24 @@ export default function PlaceDetails() {
   const user = checkUser()
 
   useEffect(() => {
-    const fetchPlace = async () => {
+    if (!id) return
+    const fetchData = async () => {
       try {
-        const res = await api.get(`/place/${id}`)
-        setPlace(res.data)
+        const [placeRes, reviewRes] = await Promise.all([
+          api.get(`/place/${id}`),
+          api.get(`/review/place/${id}`)
+        ])
+        setPlace(placeRes.data)
+        setReviwes(reviewRes.data)
+      } catch (error) {
+        const message = error.response?.data?.message || "Something went wrong"
+        toast.error(message)
+      } finally {
         setLoading(false)
-      } catch (error) {
-        const message = error.response?.data?.message || "Something went wrong"
-        toast.error(message)
       }
     }
-    fetchPlace()
-  }, [])
-
-  useEffect(() => {
-    if (!place._id) return
-    const fetchReview = async () => {
-      try {
-        const res = await api.get('/review/place', {
-          params: { place: place._id }
-        })
-        setReviwes(res.data)
-      } catch (error) {
-        const message = error.response?.data?.message || "Something went wrong"
-        toast.error(message)
-      }
-    }
-    fetchReview()
-  }, [place._id])
+    fetchData()
+  }, [id])
 
   async function onSubmit(data) {
     try {

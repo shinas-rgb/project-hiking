@@ -1,9 +1,9 @@
 import toast from "react-hot-toast"
-import { checkUser } from "../utils/auth"
+import { checkUser } from "../../utils/auth"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import Overlay from "./Overlay"
-import api from "../api/api"
+import Overlay from "../Overlay"
+import api from "../../api/api"
 import { useForm } from "react-hook-form"
 
 export default function Account() {

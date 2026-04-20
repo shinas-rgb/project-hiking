@@ -63,7 +63,7 @@ export async function deletePlace(req, res) {
 // Search Function 
 export async function searchPlace(req, res) {
   try {
-    const { q, district, trending, difficulty, bestSeason, hDuration, lDuration, hDistance, lDistance, lat, lng, distance } = req.query
+    const { q, district, trending, createdBy, difficulty, bestSeason, hDuration, lDuration, hDistance, lDistance, lat, lng, distance } = req.query
 
     let query = {}
 
@@ -104,6 +104,8 @@ export async function searchPlace(req, res) {
         $maxDistance: distance
       }
     }
+
+    if (createdBy) query.createdBy = createdBy
 
     const places = await Place.find(query)
     res.status(200).json({ places, trending })

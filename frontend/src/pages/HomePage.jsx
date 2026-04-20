@@ -1,4 +1,3 @@
-import TrendingPosts from "../components/TrendingPosts.jsx"
 import Navbar from '../components/Navbar.jsx'
 import SearchBar from "../components/SearchBar.jsx"
 import { Link } from "react-router-dom"

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
-import api from "../api/api"
-import { checkUser } from "../utils/auth"
+import api from "../../api/api.js"
+import { checkUser } from "../../utils/auth"
 import { Link } from "react-router-dom"
 
 export default function Reviews() {
@@ -12,9 +12,7 @@ export default function Reviews() {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const res = await api.get('/review/user', {
-          params: { user: user.id }
-        })
+        const res = await api.get(`/review/user/${user.id}`)
         setReviews(res.data)
         setLoading(false)
       } catch (error) {
@@ -35,7 +33,7 @@ export default function Reviews() {
                 <div>
                   {reviews.map((r) => (
                     <div key={r._id} className="my-4">
-                      <Link to={`/place/${r.place}`}>
+                      <Link to={`/ place / ${r.place}`}>
                         <h3 className="text-xl font-bold my-2 hover:text-gray-300 hover:cursor-pointer">{r.placeTitle}</h3>
                       </Link>
                       <p className="ml-4">{r.review}</p>

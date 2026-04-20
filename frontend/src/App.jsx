@@ -8,20 +8,25 @@ import UserProfile from './pages/UserProfile'
 import AdminPanel from './pages/AdminPanel'
 import SearchPlaces from './pages/SearchPlaces.jsx'
 import ProtectedRoute from './route/ProtectedRoute'
-import Account from './components/Account.jsx'
-import Reviews from './components/Reviews.jsx'
-import Profile from './components/Profile.jsx'
+import Account from './components/profile/Account.jsx'
+import Reviews from './components/profile/Reviews.jsx'
+import Profile from './components/profile/Profile.jsx'
+import Admin from './components/admin/Admin.jsx'
+import Users from './components/admin/Users.jsx'
 
 function App() {
   return (
     <Routes>
       <Route element={<ProtectedRoute />}>
         <Route path='/profile' element={<UserProfile />}>
+          <Route index element={<Profile />} />
           <Route path='account' element={<Account />} />
           <Route path='reviews' element={<Reviews />} />
-          <Route path='' element={<Profile />} />
         </Route>
-        <Route path='/admin' element={<AdminPanel />} />
+        <Route path='/admin' element={<AdminPanel />} >
+          <Route index element={<Admin />} />
+          <Route path='users/:id' element={<Users />} />
+        </Route>
         <Route path='/add-place' element={<AddPlace />} />
       </Route>
       <Route path='/place/:id' element={<PlaceDetails />} />

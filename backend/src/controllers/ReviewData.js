@@ -3,11 +3,10 @@ import Review from "../models/Review.js"
 
 export async function getReviewsOfUser(req, res) {
   try {
-    const user = req.query.user
+    const id = req.params.id
     const reviews = await Review.find(
-      { userId: user }
+      { userId: id }
     )
-    if (!reviews) return res.status(400).json({ message: "No reviews found" })
     res.status(200).json(reviews)
   } catch (error) {
     res.status(500).json({ message: "Internal server error" })
@@ -16,9 +15,9 @@ export async function getReviewsOfUser(req, res) {
 
 export async function getReviewsOfPlace(req, res) {
   try {
-    const { place } = req.query
+    const id = req.params.id
     const reviews = await Review.find(
-      { place: place }
+      { place: id }
     )
     if (reviews.length === 0) return res.status(200).json({ message: "No reviews found" })
     res.status(200).json(reviews)
