@@ -87,7 +87,9 @@ export default function SearchPlaces() {
     <div>
       <div className="w-full">
         <Navbar />
-        <SearchBar />
+        <div className="mt-4">
+          <SearchBar />
+        </div>
         {loading && (<h1>Loading</h1>)}
         <div className="text-white  grid max-sm:text-xs">
           {open && (

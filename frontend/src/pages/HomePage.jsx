@@ -8,7 +8,9 @@ export default function HomePage() {
     <div
       className='page mb-8 max-w-full'>
       <Navbar />
-      <SearchBar />
+      <div className='mt-4'>
+        <SearchBar />
+      </div>
       <div className='mt-8 grid justify-center  text-center' >
         <div className=" bg-gray-600 p-4 flex flex-col gap-4">
           <h2 className="text-3xl max-sm:text-xl">Welcome to Trek wiki of Kerala</h2>

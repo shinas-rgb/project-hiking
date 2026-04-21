@@ -6,7 +6,7 @@ export const getPlaces = async (req, res) => {
     res.status(200).json(notes)
   } catch (error) {
     console.error("Error fetching places")
-    res.status(500).json({ message: "error" })
+    res.status(500).json({ message: error.message })
   }
 }
 
@@ -16,7 +16,7 @@ export const getPlaceById = async (req, res) => {
     if (!place) return res.status(404).json({ message: "Place not found" })
     res.status(200).json(place)
   } catch (error) {
-    res.status(500).json({ message: "error" })
+    res.status(500).json({ message: error.message })
   }
 }
 
@@ -38,13 +38,14 @@ export const createPlace = async (req, res) => {
 
 export const updatePlace = async (req, res) => {
   try {
-    const { value } = req.body
-    const updatePlace = await Place.updateMany(
-      { rating: { $exists: false } },
-      { $set: { rating: value } },
-    )
-    // if (!updatePlace) return res.status(404).json({ message: "Place not found" })
-    res.status(200).json({ message: "Place updated successfully", updatePlace })
+    const { id, title, description, images, features, location, difficulty, bestSeason,
+      season, bestTime, route, tips, duration, distance } = req.body
+
+    const updatedPlace = await Place.findByIdAndUpdate(id, {
+      title, description, images, features, location, difficulty, bestSeason,
+      season, bestTime, route, tips, duration, distance
+    }, { new: true })
+    res.status(200).json({ message: "Place updated successfully", updatedPlace })
   } catch (error) {
     res.status(500).send("Internal server error")
   }

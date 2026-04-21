@@ -13,6 +13,7 @@ import Reviews from './components/profile/Reviews.jsx'
 import Profile from './components/profile/Profile.jsx'
 import Admin from './components/admin/Admin.jsx'
 import Users from './components/admin/Users.jsx'
+import Places from './components/admin/Places.jsx'
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path='/admin' element={<AdminPanel />} >
           <Route index element={<Admin />} />
           <Route path='users/:id' element={<Users />} />
+          <Route path='place/:id' element={<Places />} />
         </Route>
         <Route path='/add-place' element={<AddPlace />} />
       </Route>

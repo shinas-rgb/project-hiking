@@ -126,7 +126,7 @@ export default function PlaceDetails() {
             </div>
             <div className="flex flex-col gap-4">
               <h1 className="text-2xl">Reviews</h1>
-              {reviews.length > 0 && (
+              {reviews.length > 0 ? (
                 <div className="text-white  flex flex-col gap-4">
                   {reviews.map((review) => (
                     <div key={review._id} className="bg-gray-600 p-2">
@@ -142,6 +142,8 @@ export default function PlaceDetails() {
                     </div>
                   ))}
                 </div>
+              ) : (
+                <p>No reviews here</p>
               )}
             </div>
           </div>
