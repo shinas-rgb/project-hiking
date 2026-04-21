@@ -4,7 +4,12 @@ const placeSchema = new mongoose.Schema(
   {
     title: String,
     description: String,
-    images: [String],
+    images: [
+      {
+        url: String,
+        public_id: String,
+      }
+    ],
 
     location: {
       type: { type: String, enum: ["Point"], default: "Point" },
@@ -14,7 +19,7 @@ const placeSchema = new mongoose.Schema(
     difficulty: [String],
     bestSeason: [String],
     season: String,
-    bestTime: [String],
+    bestTime: String,
     route: String,
     tips: [String],
     features: [String],

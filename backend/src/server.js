@@ -2,6 +2,7 @@ import express from "express";
 import globalRoutes from "./routes/globalRoutes.js";
 import signupRoutes from "./routes/signupRoutes.js"
 import reviewRoutes from "./routes/reviewRoutes.js"
+import uploadRoutes from "./routes/uploadRoutes.js"
 import { connectDB } from "./config/db.js";
 import dotenv from "dotenv"
 import cors from "cors"
@@ -20,6 +21,7 @@ app.use(cors({
 app.use("/place", globalRoutes)
 app.use("/auth", signupRoutes)
 app.use("/review", reviewRoutes)
+app.use("/upload", uploadRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server started at port:`, PORT)

@@ -23,16 +23,16 @@ export const getPlaceById = async (req, res) => {
 export const createPlace = async (req, res) => {
   try {
     const { title, description, images, features, location, difficulty, bestSeason,
-      season, bestTime, route, tips, duration, distance, trending, createdBy } = req.body
+      season, bestTime, route, tips, duration, distance, trending, createdBy, rating } = req.body
     const newPlace = new Place({
       title, description, features, images, location, difficulty, bestSeason,
-      season, bestTime, route, tips, duration, distance, trending, createdBy
+      season, bestTime, route, tips, duration, distance, trending, createdBy, rating
     })
 
     await newPlace.save()
     res.status(201).json({ message: "New Place created" })
   } catch (error) {
-    res.status(500).send("Internal server error")
+    res.status(500).send({ message: error.message })
   }
 }
 
@@ -110,6 +110,6 @@ export async function searchPlace(req, res) {
     const places = await Place.find(query)
     res.status(200).json({ places, trending })
   } catch (error) {
-    res.status(500).send("Internal server error")
+    res.status(500).send({ message: error.message })
   }
 }

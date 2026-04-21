@@ -6,20 +6,31 @@ import { useState } from "react"
 import { checkUser } from "../utils/auth.js"
 
 export default function AddPlace() {
-  const { register, handleSubmit } = useForm()
+  const { register, handleSubmit, formState: { errors } } = useForm()
   const [tips, setTips] = useState([""])
   const [features, setFeatures] = useState([""])
+  const [files, setFiles] = useState(null)
   const user = checkUser()
 
   async function onSubmit(data) {
     try {
+      if (!files || files.length === 0) return
+
+      const formData = new FormData()
+      for (let i = 0; i < files.length; i++) {
+        formData.append('images', files[i])
+      }
+
+      const imageRes = await api.post('/upload', formData)
+      const uploadedImages = imageRes.data
+
       const res = await api.post("/place", {
         title: data.title,
         description: data.description,
-        images: [data.image1, data.image2, data.image3],
+        images: uploadedImages,
         location: {
           type: "Point",
-          coordinates: data.coordinates.split(',').map(Number),
+          coordinates: [Number(data.coordLat), Number(data.coordLon)]
         },
         bestSeason: data.season,
         season: data.bestSeason,
@@ -31,12 +42,15 @@ export default function AddPlace() {
         duration: data.duration,
         distance: data.distance,
         trending: true,
-        createdBy: user.id
+        createdBy: user.id,
+        rating: 0,
       })
       toast.success(res.data.message)
+      console.log(uploadedImages)
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
       toast.error(message)
+      console.log(message)
     }
   }
 
@@ -50,17 +64,10 @@ export default function AddPlace() {
     updated[index] = value
     setFeatures(updated)
   }
-  // async function updateMany() {
-  //   try {
-  //     await api.put("/place", {
-  //       value: 0.0
-  //     }).then((response) => toast.success(response.message))
-  //   } catch (error) {
-  //     const message = error.response?.data?.message || "Something went wrong"
-  //     toast.error(message)
-  //     console.log(error)
-  //   }
-  // }
+
+  function handleImage(e) {
+    setFiles(e.target.files)
+  }
   return (
     <div>
       <NavBar />
@@ -81,11 +88,32 @@ export default function AddPlace() {
               </div>
               <div className="flex flex-col">
                 <label>Cords</label>
-                <input
-                  className="input-field"
-                  type="text"
-                  placeholder="Coordinates"
-                  {...register('coordinates', { required: 'Name of Place is Required' })} />
+                <div classname="">
+                  <input
+                    min="-90"
+                    max="90"
+                    className="input-field"
+                    type="number"
+                    placeholder="Coordinates"
+                    {...register('coordLat', {
+                      required: 'Coordinates of Place is Required',
+                      valueAsNumber: true,
+                      min: { value: -90, message: "Minimum is -90" },
+                      max: { value: 90, message: "Maximum is 90" }
+                    })} />
+                  <input
+                    min="-180"
+                    max="180"
+                    className="input-field"
+                    type="number"
+                    placeholder="Coordinates"
+                    {...register('coordLon', {
+                      required: 'Coordinates of Place is Required',
+                      valueAsNumber: true,
+                      min: { value: -180, message: "Minimum is -180" },
+                      max: { value: 180, message: "Maximum is 180" }
+                    })} />
+                </div>
               </div>
             </div>
             <label>Description</label>
@@ -94,24 +122,10 @@ export default function AddPlace() {
               type="text"
               placeholder="Description"
               {...register('description', { required: 'Description of Place is Required' })} />
-            <label>Image 1</label>
-            <input
-              className="input-field"
-              type="url"
-              placeholder="Link of image 1"
-              {...register('image1', { required: 'Link of Image is Required' })} />
-            <label>Image 2</label>
-            <input
-              className="input-field"
-              type="url"
-              placeholder="Link of image 2"
-              {...register('image2', { required: 'Link of Image is Required' })} />
-            <label>Image 3</label>
-            <input
-              className="input-field"
-              type="url"
-              placeholder="Link of image 3"
-              {...register('image3', { required: 'Link of Image is Required' })} />
+            <label>Upload Images</label>
+            <input type="file" accept="image/*" multiple height="40" onChange={handleImage}
+              className="bg-gray-200 h-28 rounded border-2 content-center text-center
+              hover:bg-gray-100 hover:cursor-pointer" />
             <div>
               <fieldset className="border-2 p-4 my-2">
                 <legend>Select appropriate seasons</legend>
@@ -141,7 +155,7 @@ export default function AddPlace() {
                   className="input-field w-full"
                   type="text"
                   placeholder="Best Season"
-                  {...register('bestSeason', { required: 'Link of Image is Required' })} />
+                  {...register('bestSeason')} />
               </div>
               <fieldset className="border-2 p-4">
                 <legend>Select defficulty </legend>
@@ -168,7 +182,7 @@ export default function AddPlace() {
                 className="input-field w-full"
                 type="text"
                 placeholder="Best time"
-                {...register('bestTime', { required: 'Link of Image is Required' })} />
+                {...register('bestTime')} />
             </div>
             <div>
               <label>Route</label>
@@ -176,7 +190,7 @@ export default function AddPlace() {
                 className="input-field w-full"
                 type="text"
                 placeholder="Route"
-                {...register('route', { required: 'Link of Image is Required' })} />
+                {...register('route', { required: 'Route is Required' })} />
             </div>
             <div>
               <h3>Add Tips</h3>

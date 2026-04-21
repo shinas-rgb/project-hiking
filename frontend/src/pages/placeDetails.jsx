@@ -10,6 +10,7 @@ export default function PlaceDetails() {
   const { id } = useParams()
   const [place, setPlace] = useState({})
   const [reviews, setReviwes] = useState({})
+  const [newReview, setNewReview] = useState(null)
   const [loading, setLoading] = useState(true)
   const [rating, setRating] = useState(1)
   const { register, handleSubmit } = useForm()
@@ -33,7 +34,7 @@ export default function PlaceDetails() {
       }
     }
     fetchData()
-  }, [id])
+  }, [id], [newReview])
 
   async function onSubmit(data) {
     try {
@@ -43,7 +44,9 @@ export default function PlaceDetails() {
         userEmail: user.email,
         rating: rating,
         review: data.review,
+        placeTitle: place.title,
       })
+      setNewReview(res.data)
       toast.success(res.data.message)
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
@@ -63,11 +66,11 @@ export default function PlaceDetails() {
                 <p>Rating: {place.rating.toFixed(2)}</p>
                 <div className="flex gap-4 w-full max-sm:flex-col">
                   <p className="w-3/4 max-sm:w-full">{place.description}</p>
-                  <img src={place.images[0]} alt="" />
                 </div>
-                <div className="flex justify-around my-4 max-sm:flex-col max-sm:gap-4">
-                  <img src={place.images[1]} alt="" />
-                  <img src={place.images[2]} alt="" />
+                <div className="flex justify-around my-4 max-sm:flex-col max-sm:gap-4 flex-wrap">
+                  {place.images.map((i) => (
+                    <img src={i.url} alt="" className="object-cover h-38 mt-4" />
+                  ))}
                 </div>
               </div>
             </div >

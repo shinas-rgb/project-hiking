@@ -179,7 +179,7 @@ export default function SearchPlaces() {
           {places.length > 0 &&
             places.map((place) => (
               <div className="" key={place._id}>
-                <img className="rounded-t-2xl object-cover w-full sm:h-96 h-28" src={place.images[0]} alt="" />
+                <img className="rounded-t-2xl object-cover w-full sm:h-96 h-28" src={place.images[0]?.url} alt="" />
                 <Link to={`/place/${place._id} `} > <h2 className="text-gray-400 font-bold ml-2 mt-2 hover:cursor-pointer">{place.title}</h2></Link>
               </div>
             ))}
