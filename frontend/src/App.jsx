@@ -23,6 +23,7 @@ function App() {
           <Route index element={<Profile />} />
           <Route path='account' element={<Account />} />
           <Route path='reviews' element={<Reviews />} />
+          <Route path='reviews' element={<Reviews />} />
         </Route>
         <Route path='/admin' element={<AdminPanel />} >
           <Route index element={<Admin />} />

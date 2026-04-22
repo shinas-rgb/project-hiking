@@ -125,3 +125,32 @@ export async function getUserById(req, res) {
     res.status(500).json({ message: "Internal server error" })
   }
 }
+
+export async function addToBookmarks(req, res) {
+  try {
+    const placeId = req.params.placeId
+    const { id } = req.body
+    console.log(id, placeId)
+    const updatedUser = await User.findByIdAndUpdate(id, {
+      $addToSet: { bookmarks: placeId }
+    }, { new: true })
+
+    if (!updatedUser) return res.status(400).json({ message: "Already in the bookmarks" })
+    res.status(200).json({ message: "Added to bookmarks", updatedUser })
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
+export async function removeFromBookmarks(req, res) {
+  try {
+    const placeId = req.params.placeId
+    const { id } = req.body
+    const updatedUser = await User.findByIdAndUpdate(id, {
+      $pull: { bookmarks: placeId }
+    }, { new: true })
+    res.status(200).json({ message: "Removed from bookmarks", updatedUser })
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}

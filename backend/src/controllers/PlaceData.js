@@ -1,4 +1,5 @@
 import Place from "../models/Place.js"
+import User from "../models/User.js"
 
 export const getPlaces = async (req, res) => {
   try {
@@ -64,7 +65,7 @@ export async function deletePlace(req, res) {
 // Search Function 
 export async function searchPlace(req, res) {
   try {
-    const { q, district, trending, createdBy, difficulty, bestSeason, hDuration, lDuration, hDistance, lDistance, lat, lng, distance } = req.query
+    const { id, q, district, trending, bookmarks, createdBy, difficulty, bestSeason, hDuration, lDuration, hDistance, lDistance, lat, lng, distance } = req.query
 
     let query = {}
 
@@ -107,6 +108,14 @@ export async function searchPlace(req, res) {
     }
 
     if (createdBy) query.createdBy = createdBy
+
+    if (bookmarks) {
+      const user = await User.findById(id)
+      const places = await Place.find({
+        _id: { $in: user.bookmarks }
+      })
+      return res.status(200).json({ places })
+    }
 
     const places = await Place.find(query)
     res.status(200).json({ places, trending })

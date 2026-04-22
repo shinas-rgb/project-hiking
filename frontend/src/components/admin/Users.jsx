@@ -10,6 +10,7 @@ export default function Users() {
   const [loading, setLoading] = useState(true)
   const [places, setPlaces] = useState([])
   const [reviews, setReviews] = useState([])
+  const [searches, setSearches] = useState([])
   const { id } = useParams()
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -19,16 +20,20 @@ export default function Users() {
     if (!id) return
     const fetchAll = async () => {
       try {
-        const [userRes, placeRes, reviewRes] = await Promise.all([
+        const [userRes, placeRes, reviewRes, searchRes] = await Promise.all([
           api.get(`/auth/user/${id}`),
           api.get('/place/search', {
             params: { createdBy: id }
           }),
-          api.get(`/review/user/${id}`)
+          api.get(`/review/user/${id}`),
+          api.get(`/place/search`, {
+            params: { bookmarks: "true", id: id }
+          })
         ])
         setUser(userRes.data)
         setPlaces(placeRes.data.places)
         setReviews(reviewRes.data)
+        setSearches(searchRes.data.places)
       } catch (error) {
         console.log(error)
         const message = error.response?.data?.message
@@ -104,6 +109,22 @@ export default function Users() {
                     </div>
                   ) : (
                     <p className="ml-4">You have no reviews</p>
+                  )}
+                </div>
+                <div>
+                  <h1>Bookmarks</h1>
+                  {searches?.length > 0 ? (
+                    <div className="ml-4 flex gap-1 flex-col">
+                      {searches.map((s) => (
+                        <div key={s._id} >
+                          <Link to={`/place/${s._id}`}>
+                            <p className="text-gray-400 hover:text-gray-300 w-fit">{s.title}</p>
+                          </Link>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p>No bookmarks</p>
                   )}
                 </div>
                 {user.role !== 'admin' && (

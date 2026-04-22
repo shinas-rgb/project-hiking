@@ -2,11 +2,12 @@ import { useEffect } from "react"
 import toast from "react-hot-toast"
 import api from "../api/api"
 import { useState } from "react"
-import { Link, useNavigate, useSearchParams } from "react-router-dom"
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import Navbar from "../components/Navbar.jsx"
 import SearchBar from "../components/SearchBar"
 import Overlay from "../components/Overlay"
 import SliderBar from "../components/Slider"
+import { checkUser } from "../utils/auth.js"
 
 export default function SearchPlaces() {
   const [places, setPlaces] = useState([])
@@ -20,6 +21,7 @@ export default function SearchPlaces() {
   let [filter, setFilter] = useState(false)
   const [searchParams] = useSearchParams();
   const navigate = useNavigate()
+  const user = checkUser()
 
   useEffect(() => {
     const fetchSearch = async () => {
@@ -27,11 +29,14 @@ export default function SearchPlaces() {
         const res = await api.get(`/place/search`, {
           params: searchParams
         })
+        console.log(searchParams)
         setPlaces(res.data.places)
+        if (!searchParams.has("trending"))
+          setFilter(true)
         setLoading(false)
       } catch (error) {
         const message = error.response?.data?.message || "Something went wrong"
-        toast.error(message)
+        console.error(message)
       }
     }
     fetchSearch()
@@ -175,10 +180,13 @@ export default function SearchPlaces() {
         {searchParams.has("trending") && (
           <h1 className="text-2xl sm:m-8 m-4">Trending Places</h1>
         )}
+        {searchParams.has("bookmarks") && (
+          <h1 className="text-2xl sm:m-8 m-4">Bookmarked Places</h1>
+        )}
         <div className="4 justify-around gap-4 
           grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:justify-around  m-8 
           grid-cols-2">
-          {places.length > 0 &&
+          {places?.length > 0 &&
             places.map((place) => (
               <div className="" key={place._id}>
                 <img className="rounded-t-2xl object-cover w-full sm:h-96 h-28" src={place.images[0]?.url} alt="" />

@@ -14,18 +14,22 @@ export default function PlaceDetails() {
   const [loading, setLoading] = useState(true)
   const [rating, setRating] = useState(1)
   const { register, handleSubmit } = useForm()
-  const user = checkUser()
+  const [user, setUser] = useState(checkUser())
+  const [isBook, setIsBook] = useState(false)
 
   useEffect(() => {
     if (!id) return
     const fetchData = async () => {
       try {
-        const [placeRes, reviewRes] = await Promise.all([
+        const [placeRes, reviewRes, userRes] = await Promise.all([
           api.get(`/place/${id}`),
-          api.get(`/review/place/${id}`)
+          api.get(`/review/place/${id}`),
+          api.get(`/auth/user/${user.id || user._id}`)
         ])
         setPlace(placeRes.data)
         setReviwes(reviewRes.data)
+        setUser(userRes.data)
+        setIsBook(userRes.data.bookmarks?.some(b => b === placeRes.data._id || b._id === placeRes.data._id))
       } catch (error) {
         const message = error.response?.data?.message || "Something went wrong"
         toast.error(message)
@@ -34,7 +38,7 @@ export default function PlaceDetails() {
       }
     }
     fetchData()
-  }, [id], [newReview])
+  }, [user])
 
   async function onSubmit(data) {
     try {
@@ -54,6 +58,29 @@ export default function PlaceDetails() {
     }
   }
 
+  async function addToBookmarks() {
+    try {
+      const res = await api.post(`auth/bookmarks/${id}`,
+        { id: user._id })
+      toast.success(res.data.message)
+      setUser(res.data.updatedUser)
+    } catch (error) {
+      const message = error.response?.data?.message || "Something went wrong"
+      console.log(message)
+    }
+  }
+
+  async function removeFromBookmarks() {
+    try {
+      const res = await api.delete(`auth/bookmarks/${id}`,
+        { data: { id: user._id } })
+      toast.success(res.data.message)
+      setUser(res.data.updatedUser)
+    } catch (error) {
+      const message = error.response?.data?.message || "Something went wrong"
+      console.log(message)
+    }
+  }
   return (
     <div>
       <Navbar />
@@ -62,14 +89,27 @@ export default function PlaceDetails() {
           <div className="mx-8 text-white">
             <div className="h-fit py-4 text-gray-300">
               <div className="flex flex-col gap-8 max-sm:gap-2">
-                <h1 className="text-4xl max-sm:text-2xl">{place.title}</h1>
+                <div className="flex justify-between">
+                  <h1 className="text-4xl max-sm:text-2xl">{place.title}</h1>
+                  {isBook ? (
+                    <button onClick={removeFromBookmarks}>
+                      <svg className="object-cover h-8 fill-gray-300 hover:fill-gray-500 hover:cursor-pointer m-4" title="hi"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M192 64C156.7 64 128 92.7 128 128L128 544C128 555.5 134.2 566.2 144.2 571.8C154.2 577.4 166.5 577.3 176.4 571.4L320 485.3L463.5 571.4C473.4 577.3 485.7 577.5 495.7 571.8C505.7 566.1 512 555.5 512 544L512 128C512 92.7 483.3 64 448 64L192 64z" /></svg>
+                    </button>
+                  ) : (
+                    <button onClick={addToBookmarks}>
+                      <svg className="object-cover h-8 fill-gray-700 hover:fill-gray-500 hover:cursor-pointer m-4" title="hi"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M192 64C156.7 64 128 92.7 128 128L128 544C128 555.5 134.2 566.2 144.2 571.8C154.2 577.4 166.5 577.3 176.4 571.4L320 485.3L463.5 571.4C473.4 577.3 485.7 577.5 495.7 571.8C505.7 566.1 512 555.5 512 544L512 128C512 92.7 483.3 64 448 64L192 64z" /></svg>
+                    </button>
+                  )}
+                </div>
                 <p>Rating: {place.rating.toFixed(2)}</p>
                 <div className="flex gap-4 w-full max-sm:flex-col">
                   <p className="w-3/4 max-sm:w-full">{place.description}</p>
                 </div>
                 <div className="flex justify-around my-4 max-sm:flex-col max-sm:gap-4 flex-wrap">
                   {place.images.map((i) => (
-                    <img src={i.url} alt="" className="object-cover h-38 mt-4" />
+                    <img key={i._id} src={i.url} alt="" className="object-cover h-38 mt-4" />
                   ))}
                 </div>
               </div>
