@@ -1,12 +1,12 @@
 import axios from "axios"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
-import toast, { Toaster } from "react-hot-toast"
+import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
 import { checkUser } from "../utils/auth.js"
 
 export default function AuthPage() {
-  const { register, handleSubmit, formState: { errors } } = useForm()
+  const { register, handleSubmit } = useForm()
   const [mode, setMode] = useState("login")
   const navigate = useNavigate()
   const user = checkUser()
@@ -50,7 +50,7 @@ export default function AuthPage() {
         <form
           onSubmit={handleSubmit(onSubmit)}
 
-          className="new-form align-text-top">
+          className="new-form align-text-top sm:gap-2">
           <input
             className="input-field max-sm:mb-2"
             type="email"
