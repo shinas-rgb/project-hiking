@@ -1,13 +1,11 @@
 import { useEffect } from "react"
-import toast from "react-hot-toast"
 import api from "../api/api"
 import { useState } from "react"
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import Navbar from "../components/Navbar.jsx"
 import SearchBar from "../components/SearchBar"
 import Overlay from "../components/Overlay"
 import SliderBar from "../components/Slider"
-import { checkUser } from "../utils/auth.js"
 
 export default function SearchPlaces() {
   const [places, setPlaces] = useState([])
@@ -18,10 +16,13 @@ export default function SearchPlaces() {
   const [season, setSeason] = useState("")
   const [difficulty, setDifficulty] = useState("")
   const [district, setDistrict] = useState("")
+  const [locLimit, setLocLimit] = useState(10)
+  const [checked, setChecked] = useState(false)
+  const [sortBy, setSortBy] = useState("")
+  const [sortDirection, setSortDirection] = useState(1)
   let [filter, setFilter] = useState(false)
   const [searchParams] = useSearchParams();
   const navigate = useNavigate()
-  const user = checkUser()
 
   useEffect(() => {
     const fetchSearch = async () => {
@@ -29,7 +30,6 @@ export default function SearchPlaces() {
         const res = await api.get(`/place/search`, {
           params: searchParams
         })
-        console.log(searchParams)
         setPlaces(res.data.places)
         if (!searchParams.has("trending"))
           setFilter(true)
@@ -85,9 +85,47 @@ export default function SearchPlaces() {
 
   function clearFilter() {
     setFilter(false)
+    setLocLimit(5)
     navigate(`/search?trending=true`)
   }
 
+  function handleLocationWithin(val) {
+    navigator.geolocation.getCurrentPosition(async (pos) => {
+      setFilter(true)
+      const { latitude, longitude } = pos.coords
+      if (!searchParams.has("lat")) {
+        navigate(`/search?lon=${longitude}&lat=${latitude}&within=${locLimit}`)
+      } else {
+        searchParams.set('within', val)
+        navigate(`/search?${searchParams}`)
+      }
+    })
+  }
+
+  function handleChecked(e) {
+    setChecked(e.target.checked)
+    if (checked) {
+      navigate(`/search?trending=true`)
+    } else {
+      handleLocationWithin()
+    }
+  }
+
+  function handleLocationLimit(e) {
+    handleLocationWithin(e.target.value)
+    setLocLimit(e.target.value)
+  }
+
+
+  function handleSort(updatedSortBy = sortBy, updatedDirection = sortDirection) {
+    if (!updatedSortBy) return
+
+    const params = searchParams
+    params.set(updatedSortBy, updatedDirection)
+    setFilter(true)
+
+    navigate(`/search?${params}`)
+  }
   return (
     <div>
       <div className="w-full">
@@ -133,15 +171,23 @@ export default function SearchPlaces() {
                       <fieldset onChange={handleChange} className="border-2 p-2 max-sm:w-fit bg-gray-600 text-white border-black rounded-xl">
                         <select name="district" value={district} onChange={(e) => setDistrict(e.target.value)}>
                           <option value="">All districts</option>
-                          <option value="Wayanad">Wayanad</option>
-                          <option value="Theni">Theni</option>
-                          <option value="Eranakulam">Eranakulam</option>
-                          <option value="Idukki">Idukki</option>
+                          <option value="wayanad">Wayanad</option>
+                          <option value="theni">Theni</option>
+                          <option value="eranakulam">Eranakulam</option>
+                          <option value="idukki">Idukki</option>
+                          <option value="malappuram">Malappuram</option>
                         </select>
                       </fieldset>
                     </div>
                   </div>
                 </form>
+                <div>
+                  <form className="flex gap-2 items-center">
+                    <input type="checkbox" checked={checked} onChange={handleChecked} />
+                    <label>Nearby Places within(km)</label>
+                    <input type="number" min="1" className="w-14 bg-gray-400 py-1 px-2 rounded border" value={locLimit} onChange={(e) => handleLocationLimit(e)} />
+                  </form>
+                </div>
                 <div className="flex justify-around max-sm:flex-col max-sm:items-center max-sm:gap-4">
                   <form onChange={handleDuration} className="w-44">
                     <label>Duration (Hour)</label>
@@ -164,25 +210,61 @@ export default function SearchPlaces() {
             </div>
           )}
           <div className="w-full">
-            <div className="flex gap-4 content-center items-center justify-end mr-8 max-sm:mt-4">
+            <div className="flex gap-28 content-center items-center justify-end mr-8 max-sm:mt-4">
               {filter && (
                 <div className="flex justify-end max-sm:mb-1 mb-1">
                   <button onClick={() => { clearFilter(); setFilter(false) }} className="underline hover:text-blue-600 hover:cursor-pointer">Clear Filters</button>
                 </div>
               )}
-              <button className="flex hover:cursor-pointer gap-1" onClick={() => setOpen(true)}>
-                <h4 className="max-sm:text-xs">Filter</h4>
-                <svg className="h-7 fill-white max-sm:h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M96 128C83.1 128 71.4 135.8 66.4 147.8C61.4 159.8 64.2 173.5 73.4 182.6L256 365.3L256 480C256 488.5 259.4 496.6 265.4 502.6L329.4 566.6C338.6 575.8 352.3 578.5 364.3 573.5C376.3 568.5 384 556.9 384 544L384 365.3L566.6 182.7C575.8 173.5 578.5 159.8 573.5 147.8C568.5 135.8 556.9 128 544 128L96 128z" /></svg>
-              </button>
+              <div className="flex flex-col gap-2">
+                <button className="flex hover:cursor-pointer gap-1" onClick={() => setOpen(true)}>
+                  <h4 className="max-sm:text-xs">Filter</h4>
+                  <svg className="h-7 fill-white max-sm:h-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M96 128C83.1 128 71.4 135.8 66.4 147.8C61.4 159.8 64.2 173.5 73.4 182.6L256 365.3L256 480C256 488.5 259.4 496.6 265.4 502.6L329.4 566.6C338.6 575.8 352.3 578.5 364.3 573.5C376.3 568.5 384 556.9 384 544L384 365.3L566.6 182.7C575.8 173.5 578.5 159.8 573.5 147.8C568.5 135.8 556.9 128 544 128L96 128z" /></svg>
+                </button>
+                <div className="flex">
+                  <fieldset onChange={handleSort}>
+                    <select name="sort" value={sortBy} onChange={(e) => {
+                      const value = e.target.value
+                      setSortBy(value)
+                      handleSort(value, sortDirection)
+                    }}>
+                      <option value="">Sort</option>
+                      <option value="distance">Distance</option>
+                      <option value="duration">Duration</option>
+                    </select>
+                  </fieldset>
+                  {sortDirection === 1 ? (
+                    <button onClick={() => {
+                      const newDirection = -1
+                      setSortDirection(newDirection);
+                      handleSort(sortBy, newDirection)
+                    }}>
+                      <h1>v</h1>
+                    </button>
+                  ) : (
+                    <button onClick={() => {
+                      const newDirection = 1
+                      setSortDirection(newDirection);
+                      handleSort(sortBy, newDirection);
+                    }}>
+                      <h1 className="text-2xl">^</h1>
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        {searchParams.has("trending") && (
-          <h1 className="text-2xl sm:m-8 m-4">Trending Places</h1>
-        )}
-        {searchParams.has("bookmarks") && (
-          <h1 className="text-2xl sm:m-8 m-4">Bookmarked Places</h1>
-        )}
+        {
+          searchParams.has("trending") && (
+            <h1 className="text-2xl sm:m-8 m-4">Trending Places</h1>
+          )
+        }
+        {
+          searchParams.has("bookmarks") && (
+            <h1 className="text-2xl sm:m-8 m-4">Bookmarked Places</h1>
+          )
+        }
         <div className="4 justify-around gap-4 
           grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:justify-around  m-8 
           grid-cols-2">
@@ -194,7 +276,7 @@ export default function SearchPlaces() {
               </div>
             ))}
         </div>
-      </div>
+      </div >
     </div >
   )
 }

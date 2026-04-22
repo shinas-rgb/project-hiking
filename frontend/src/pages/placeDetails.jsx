@@ -44,7 +44,7 @@ export default function PlaceDetails() {
     try {
       const res = await api.post('/review', {
         place: place._id,
-        userId: user.id,
+        userId: user.id || user._id,
         userEmail: user.email,
         rating: rating,
         review: data.review,
@@ -54,7 +54,7 @@ export default function PlaceDetails() {
       toast.success(res.data.message)
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
-      toast.error(message)
+      console.log(message)
     }
   }
 
@@ -114,21 +114,24 @@ export default function PlaceDetails() {
                 </div>
               </div>
             </div >
-            <div className="text-gray-300">
+            <div className="text-gray-300 flex flex-col gap-2">
               <h3 className="text-xl italic">{place.title} is a trip of maximum {place.duration} hours and about {place.distance} kilometers</h3>
               <h3>Coordinates:</h3>
               <h3>{place.location.coordinates[0]}°E {place.location.coordinates[1]}°N</h3>
+              <Link to={`/search?lon=${place.location.coordinates[0]}&lat=${place.location.coordinates[1]}&within=10`}>
+                <button className="bg-gray-600 py-2 px-3 w-fit rounded hover:cursor-pointer">Places near {place.title}</button>
+              </Link>
             </div>
             <div className="mt-8">
               <h2 className="text-2xl ">Key Details</h2>
               <ul className="mt-4 text-gray-300">
-                <li>Difficulty: {place.difficulty}</li>
+                <li>Difficulty: {place.difficulty.map(d => (`${d} `))}</li>
                 <li>Best Season: {place.season}</li>
                 <li>Best time: {place.bestTime}</li>
                 <li>Route: {place.route}</li>
               </ul>
             </div>
-            {place.tips.length !== 0 && (
+            {place.tips?.length > 0 && (
               <div className="mt-8">
                 <h2 className="text-2xl">Tips</h2>
                 <ul className="mt-4">

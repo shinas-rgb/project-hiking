@@ -65,7 +65,8 @@ export async function deletePlace(req, res) {
 // Search Function 
 export async function searchPlace(req, res) {
   try {
-    const { id, q, district, trending, bookmarks, createdBy, difficulty, bestSeason, hDuration, lDuration, hDistance, lDistance, lat, lng, distance } = req.query
+    const { id, q, district, trending, bookmarks, createdBy, difficulty, bestSeason, hDuration, lDuration, hDistance, lDistance,
+      lat, lon, within, duration, distance } = req.query
 
     let query = {}
 
@@ -97,13 +98,13 @@ export async function searchPlace(req, res) {
       $options: "i"
     }
 
-    if (lat && lng && distance) query.location = {
+    if (lon && lat && within) query.location = {
       $near: {
         $geometry: {
           type: 'Point',
-          coordinates: [lat, lng]
+          coordinates: [lon, lat]
         },
-        $maxDistance: distance
+        $maxDistance: Number(within) * 1000
       }
     }
 
@@ -114,6 +115,16 @@ export async function searchPlace(req, res) {
       const places = await Place.find({
         _id: { $in: user.bookmarks }
       })
+      return res.status(200).json({ places })
+    }
+
+    if (duration) {
+      const places = await Place.find().sort({ duration: Number(duration) })
+      return res.status(200).json({ places })
+    }
+
+    if (distance) {
+      const places = await Place.find().sort({ distance: Number(distance) })
       return res.status(200).json({ places })
     }
 

@@ -35,8 +35,8 @@ export default function Places() {
 
         setTitle(res.data.title)
         setDesc(res.data.description)
-        setLat(res.data.location.coordinates[0])
-        setLon(res.data.location.coordinates[1])
+        setLon(res.data.location.coordinates[0])
+        setLat(res.data.location.coordinates[1])
         setSeason(res.data.season)
         setDur(res.data.duration)
         setDis(res.data.distance)
@@ -89,7 +89,7 @@ export default function Places() {
         features: features,
         location: {
           type: "Point",
-          coordinates: [Number(lat), Number(lon)]
+          coordinates: [Number(lon), Number(lat)]
         },
         difficulty: data.difficulty,
         bestSeason: data.season,
@@ -173,21 +173,23 @@ export default function Places() {
                   <label>Cords</label>
                   <div className="">
                     <input
-                      min="-90"
-                      max="90"
-                      className="input-field"
-                      type="number"
-                      value={lat}
-                      onChange={(e) => setLat(e.target.value)}
-                      placeholder="Coordinates"
-                    />
-                    <input
                       min="-180"
                       max="180"
+                      step="any"
                       className="input-field"
                       type="number"
                       value={lon}
                       onChange={(e) => setLon(e.target.value)}
+                      placeholder="Coordinates"
+                    />
+                    <input
+                      min="-90"
+                      max="90"
+                      step="any"
+                      className="input-field"
+                      type="number"
+                      value={lat}
+                      onChange={(e) => setLat(e.target.value)}
                       placeholder="Coordinates"
                     />
                   </div>

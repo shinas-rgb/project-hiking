@@ -6,7 +6,7 @@ import { useState } from "react"
 import { checkUser } from "../utils/auth.js"
 
 export default function AddPlace() {
-  const { register, handleSubmit, formState: { errors } } = useForm()
+  const { register, handleSubmit } = useForm()
   const [tips, setTips] = useState([""])
   const [features, setFeatures] = useState([""])
   const [files, setFiles] = useState(null)
@@ -30,7 +30,7 @@ export default function AddPlace() {
         images: uploadedImages,
         location: {
           type: "Point",
-          coordinates: [Number(data.coordLat), Number(data.coordLon)]
+          coordinates: [Number(data.coordLon), Number(data.coordLat)]
         },
         bestSeason: data.season,
         season: data.bestSeason,
@@ -90,20 +90,9 @@ export default function AddPlace() {
                 <label>Cords</label>
                 <div classname="">
                   <input
-                    min="-90"
-                    max="90"
-                    className="input-field"
-                    type="number"
-                    placeholder="Coordinates"
-                    {...register('coordLat', {
-                      required: 'Coordinates of Place is Required',
-                      valueAsNumber: true,
-                      min: { value: -90, message: "Minimum is -90" },
-                      max: { value: 90, message: "Maximum is 90" }
-                    })} />
-                  <input
                     min="-180"
                     max="180"
+                    step="any"
                     className="input-field"
                     type="number"
                     placeholder="Coordinates"
@@ -112,6 +101,19 @@ export default function AddPlace() {
                       valueAsNumber: true,
                       min: { value: -180, message: "Minimum is -180" },
                       max: { value: 180, message: "Maximum is 180" }
+                    })} />
+                  <input
+                    min="-90"
+                    max="90"
+                    step="any"
+                    className="input-field"
+                    type="number"
+                    placeholder="Coordinates"
+                    {...register('coordLat', {
+                      required: 'Coordinates of Place is Required',
+                      valueAsNumber: true,
+                      min: { value: -90, message: "Minimum is -90" },
+                      max: { value: 90, message: "Maximum is 90" }
                     })} />
                 </div>
               </div>

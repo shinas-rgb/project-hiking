@@ -45,7 +45,7 @@ export async function createReview(req, res) {
     )
     res.status(201).json({ message: "New review created" })
   } catch (error) {
-    res.status(500).json({ message: "Internal server error" })
+    res.status(500).json({ message: error.message })
   }
 }
 
