@@ -27,16 +27,14 @@ export default function PlaceDetails() {
         const reviewRes = await api.get(`/review/place/${id}`)
         setReviwes(reviewRes.data)
 
-        if (user._id || user.id) {
-          const userRes = await api.get(`/auth/user/${user._id || user.id}`)
-          setUser(userRes.data)
+        const userRes = await api.get(`/auth/user/${user._id || user.id}`)
+        setUser(userRes.data)
 
-          setIsBook(
-            userRes.data.bookmarks?.some(
-              b => b === placeRes.data._id || b._id === placeRes.data._id
-            )
+        setIsBook(
+          userRes.data.bookmarks?.some(
+            b => b === placeRes.data._id || b._id === placeRes.data._id
           )
-        }
+        )
 
       } catch (error) {
         console.log(error)
