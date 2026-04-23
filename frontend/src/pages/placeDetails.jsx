@@ -8,8 +8,8 @@ import { checkUser } from "../utils/auth.js"
 
 export default function PlaceDetails() {
   const { id } = useParams()
-  const [place, setPlace] = useState({})
-  const [reviews, setReviwes] = useState({})
+  const [place, setPlace] = useState(null)
+  const [reviews, setReviwes] = useState([])
   const [newReview, setNewReview] = useState(null)
   const [loading, setLoading] = useState(true)
   const [rating, setRating] = useState(1)
