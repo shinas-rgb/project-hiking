@@ -32,7 +32,7 @@ export default function PlaceDetails() {
         setIsBook(userRes.data.bookmarks?.some(b => b === placeRes.data._id || b._id === placeRes.data._id))
       } catch (error) {
         const message = error.response?.data?.message || "Something went wrong"
-        toast.error(message)
+        console.log(message)
       } finally {
         setLoading(false)
       }
