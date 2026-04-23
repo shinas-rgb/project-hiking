@@ -1,9 +1,9 @@
-import axios from "axios"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
 import { checkUser } from "../utils/auth.js"
+import api from "../api/api.js"
 
 export default function AuthPage() {
   const { register, handleSubmit } = useForm()
@@ -15,14 +15,14 @@ export default function AuthPage() {
   async function onSubmit(data) {
     try {
       if (mode !== 'login') {
-        await axios.post("http://localhost:8080/auth/signup", {
+        await api.post("/auth/signup", {
           email: data.email,
           password: data.password,
         })
           .then((response) => toast.success(response.data.message))
       }
 
-      await axios.post("http://localhost:8080/auth/login", {
+      await api.post("/auth/login", {
         email: data.email,
         password: data.password,
       })
