@@ -108,7 +108,7 @@ export default function PlaceDetails() {
                   <p className="w-3/4 max-sm:w-full">{place.description}</p>
                 </div>
                 <div className="flex justify-around my-4 max-sm:flex-col max-sm:gap-4 flex-wrap">
-                  {place.images.map((i) => (
+                  {place?.images?.map((i) => (
                     <img key={i._id} src={i.url} alt="" className="object-cover h-38 mt-4" />
                   ))}
                 </div>
