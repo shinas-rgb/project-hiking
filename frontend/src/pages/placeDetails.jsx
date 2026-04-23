@@ -74,7 +74,7 @@ export default function PlaceDetails() {
       setUser(res.data.updatedUser)
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
-      console.log(message)
+      toast.error(message)
     }
   }
 
@@ -87,7 +87,7 @@ export default function PlaceDetails() {
       setUser(res.data.updatedUser)
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
-      console.log(message)
+      toast.error(message)
     }
   }
   if (loading || !place) {
@@ -104,7 +104,7 @@ export default function PlaceDetails() {
                 <div className="flex justify-between">
                   <h1 className="text-4xl max-sm:text-2xl">{place.title}</h1>
                   {isBook ? (
-                    <button onClick={removeFromBookmarks}>
+                    <button onClick={removeFromBookmarks} className="p-3 rounded-full">
                       <svg className="object-cover h-8 fill-gray-300 hover:fill-gray-500 hover:cursor-pointer m-4" title="hi"
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M192 64C156.7 64 128 92.7 128 128L128 544C128 555.5 134.2 566.2 144.2 571.8C154.2 577.4 166.5 577.3 176.4 571.4L320 485.3L463.5 571.4C473.4 577.3 485.7 577.5 495.7 571.8C505.7 566.1 512 555.5 512 544L512 128C512 92.7 483.3 64 448 64L192 64z" /></svg>
                     </button>
