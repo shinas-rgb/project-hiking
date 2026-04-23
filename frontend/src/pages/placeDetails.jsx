@@ -37,7 +37,8 @@ export default function PlaceDetails() {
         )
 
       } catch (error) {
-        console.log(error)
+        const message = error.response?.data.message
+        console.log(message)
       } finally {
         setLoading(false)
       }
