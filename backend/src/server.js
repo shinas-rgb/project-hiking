@@ -16,7 +16,9 @@ connectDB();
 app.use(express.json())
 app.use(cors({
   origin: "https://project-hiking.vercel.app",
-  credentials: true
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }))
 
 app.use("/place", globalRoutes)
