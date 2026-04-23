@@ -27,8 +27,8 @@ export default function PlaceDetails() {
         const reviewRes = await api.get(`/review/place/${id}`)
         setReviwes(reviewRes.data)
 
-        if (user?._id) {
-          const userRes = await api.get(`/auth/user/${user._id}`)
+        if (user._id || user.id) {
+          const userRes = await api.get(`/auth/user/${user._id || user.id}`)
           setUser(userRes.data)
 
           setIsBook(
