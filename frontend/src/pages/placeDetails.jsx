@@ -117,7 +117,7 @@ export default function PlaceDetails() {
             <div className="text-gray-300 flex flex-col gap-2">
               <h3 className="text-xl italic">{place.title} is a trip of maximum {place.duration} hours and about {place.distance} kilometers</h3>
               <h3>Coordinates:</h3>
-              <h3>{place?.location?.coordinates[0]}°E {place.location.coordinates[1]}°N</h3>
+              <h3>{place?.location?.coordinates[0]}°E {place?.location?.coordinates[1]}°N</h3>
               <Link to={`/search?lon=${place?.location?.coordinates[0]}&lat=${place?.location?.coordinates[1]}&within=10`}>
                 <button className="bg-gray-600 py-2 px-3 w-fit rounded hover:cursor-pointer">Places near {place.title}</button>
               </Link>
