@@ -38,7 +38,7 @@ export default function PlaceDetails() {
       }
     }
     fetchData()
-  }, [user])
+  }, [id])
 
   async function onSubmit(data) {
     try {
@@ -84,7 +84,7 @@ export default function PlaceDetails() {
   return (
     <div>
       <Navbar />
-      {loading ? 'Loading...'
+      {loading || !place ? 'Loading...'
         : (
           <div className="mx-8 text-white">
             <div className="h-fit py-4 text-gray-300">
@@ -117,7 +117,7 @@ export default function PlaceDetails() {
             <div className="text-gray-300 flex flex-col gap-2">
               <h3 className="text-xl italic">{place.title} is a trip of maximum {place.duration} hours and about {place.distance} kilometers</h3>
               <h3>Coordinates:</h3>
-              <h3>{place.location.coordinates[0]}°E {place.location.coordinates[1]}°N</h3>
+              <h3>{place?.location?.coordinates[0]}°E {place.location.coordinates[1]}°N</h3>
               <Link to={`/search?lon=${place.location.coordinates[0]}&lat=${place.location.coordinates[1]}&within=10`}>
                 <button className="bg-gray-600 py-2 px-3 w-fit rounded hover:cursor-pointer">Places near {place.title}</button>
               </Link>
@@ -125,7 +125,7 @@ export default function PlaceDetails() {
             <div className="mt-8">
               <h2 className="text-2xl ">Key Details</h2>
               <ul className="mt-4 text-gray-300">
-                <li>Difficulty: {place.difficulty.map(d => (`${d} `))}</li>
+                <li>Difficulty: {place?.difficulty?.map(d => (`${d} `))}</li>
                 <li>Best Season: {place.season}</li>
                 <li>Best time: {place.bestTime}</li>
                 <li>Route: {place.route}</li>
@@ -169,7 +169,7 @@ export default function PlaceDetails() {
             </div>
             <div className="flex flex-col gap-4">
               <h1 className="text-2xl">Reviews</h1>
-              {reviews.length > 0 ? (
+              {reviews?.length > 0 ? (
                 <div className="text-white  flex flex-col gap-4">
                   {reviews.map((review) => (
                     <div key={review._id} className="bg-gray-600 p-2">
