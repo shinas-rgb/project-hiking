@@ -81,6 +81,9 @@ export default function PlaceDetails() {
       console.log(message)
     }
   }
+  if (loading || !place) {
+    return <p>Loading...</p>
+  }
   return (
     <div>
       <Navbar />
