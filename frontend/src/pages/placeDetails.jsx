@@ -70,6 +70,7 @@ export default function PlaceDetails() {
       const res = await api.post(`auth/bookmarks/${id}`,
         { id: user._id })
       toast.success(res.data.message)
+      setIsBook(true)
       setUser(res.data.updatedUser)
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
@@ -82,6 +83,7 @@ export default function PlaceDetails() {
       const res = await api.delete(`auth/bookmarks/${id}`,
         { data: { id: user._id } })
       toast.success(res.data.message)
+      setIsBook(false)
       setUser(res.data.updatedUser)
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
