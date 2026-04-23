@@ -95,7 +95,7 @@ export default function AddPlace() {
                     step="any"
                     className="input-field"
                     type="number"
-                    placeholder="Coordinates"
+                    placeholder="Longitude"
                     {...register('coordLon', {
                       required: 'Coordinates of Place is Required',
                       valueAsNumber: true,
@@ -108,7 +108,7 @@ export default function AddPlace() {
                     step="any"
                     className="input-field"
                     type="number"
-                    placeholder="Coordinates"
+                    placeholder="Latitude"
                     {...register('coordLat', {
                       required: 'Coordinates of Place is Required',
                       valueAsNumber: true,
