@@ -103,7 +103,7 @@ export default function PlaceDetails() {
                     </button>
                   )}
                 </div>
-                <p>Rating: {place.rating.toFixed(2)}</p>
+                <p>Rating: {place?.rating?.toFixed(2)}</p>
                 <div className="flex gap-4 w-full max-sm:flex-col">
                   <p className="w-3/4 max-sm:w-full">{place.description}</p>
                 </div>
