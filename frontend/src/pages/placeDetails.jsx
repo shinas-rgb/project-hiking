@@ -21,18 +21,25 @@ export default function PlaceDetails() {
     if (!id) return
     const fetchData = async () => {
       try {
-        const [placeRes, reviewRes, userRes] = await Promise.all([
-          api.get(`/place/${id}`),
-          api.get(`/review/place/${id}`),
-          api.get(`/auth/user/${user.id || user._id}`)
-        ])
+        const placeRes = await api.get(`/place/${id}`)
         setPlace(placeRes.data)
+
+        const reviewRes = await api.get(`/review/place/${id}`)
         setReviwes(reviewRes.data)
-        setUser(userRes.data)
-        setIsBook(userRes.data.bookmarks?.some(b => b === placeRes.data._id || b._id === placeRes.data._id))
+
+        if (user?._id) {
+          const userRes = await api.get(`/auth/user/${user._id}`)
+          setUser(userRes.data)
+
+          setIsBook(
+            userRes.data.bookmarks?.some(
+              b => b === placeRes.data._id || b._id === placeRes.data._id
+            )
+          )
+        }
+
       } catch (error) {
-        const message = error.response?.data?.message || "Something went wrong"
-        console.log(message)
+        console.log(error)
       } finally {
         setLoading(false)
       }
