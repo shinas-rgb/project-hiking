@@ -90,7 +90,9 @@ export default function PlaceDetails() {
     }
   }
   if (loading || !place) {
-    return <p>Loading...</p>
+    return <div className="flex justify-center text-xl items-center h-screen">
+      <h1>Loading...</h1>
+    </div>
   }
   return (
     <div>

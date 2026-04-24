@@ -33,10 +33,11 @@ export default function SearchPlaces() {
         setPlaces(res.data.places)
         if (!searchParams.has("trending"))
           setFilter(true)
-        setLoading(false)
       } catch (error) {
         const message = error.response?.data?.message || "Something went wrong"
         console.error(message)
+      } finally {
+        setLoading(false)
       }
     }
     fetchSearch()
@@ -128,7 +129,9 @@ export default function SearchPlaces() {
   }
 
   if (loading) {
-    return <p>Loading...</p>
+    return <div className="flex justify-center text-xl items-center h-screen">
+      <h1>Loading...</h1>
+    </div>
   }
   return (
     <div>
@@ -137,7 +140,6 @@ export default function SearchPlaces() {
         <div className="mt-4">
           <SearchBar />
         </div>
-        {loading && (<h1>Loading</h1>)}
         <div className="text-white  grid max-sm:text-xs">
           {open && (
             <div className="text-black">
