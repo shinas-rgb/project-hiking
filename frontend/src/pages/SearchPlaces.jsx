@@ -126,6 +126,10 @@ export default function SearchPlaces() {
 
     navigate(`/search?${params}`)
   }
+
+  if (loading) {
+    return <p>Loading...</p>
+  }
   return (
     <div>
       <div className="w-full">
