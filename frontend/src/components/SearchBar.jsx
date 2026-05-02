@@ -8,13 +8,11 @@ export default function SearchBar() {
 
   async function onSubmit(data) {
     if (data.search) {
-      if (searchParam.has("q")) {
-        searchParam.set("q", data.search)
-        navigate(`/search?${searchParam}`)
-      } else
-        navigate(`/search?q=${data.search}&${searchParam}`)
+      searchParam.delete("trending")
+      searchParam.set("q", data.search)
+      navigate(`/search?${searchParam}`)
     } else {
-      navigate(`/search?trending=true`)
+      navigate(`/search?trending=true&page=1`)
     }
   }
 

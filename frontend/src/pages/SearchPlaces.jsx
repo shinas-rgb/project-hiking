@@ -11,6 +11,8 @@ export default function SearchPlaces() {
   const [places, setPlaces] = useState([])
   const [loading, setLoading] = useState(true)
   const [open, setOpen] = useState(false)
+  const [pages, setPages] = useState(1)
+  const [page, setPage] = useState(1)
   const [duration, setDuration] = useState([1, 50])
   const [distance, setDistance] = useState([1, 20])
   const [season, setSeason] = useState("")
@@ -27,10 +29,14 @@ export default function SearchPlaces() {
   useEffect(() => {
     const fetchSearch = async () => {
       try {
-        const res = await api.get(`/place/search`, {
+        searchParams.set("page", page)
+        navigate(`/search?${searchParams}`)
+        const res = await api.get(`/places`, {
           params: searchParams
         })
         setPlaces(res.data.places)
+        setPages(res.data.totalPages)
+        console.log(res.data)
         if (!searchParams.has("trending"))
           setFilter(true)
       } catch (error) {
@@ -41,47 +47,26 @@ export default function SearchPlaces() {
       }
     }
     fetchSearch()
-  }, [searchParams])
+  }, [searchParams, page])
 
   function handleChange(e) {
     const { name, value } = e.target
-    if (!searchParams.has(name)) {
-      setFilter(true)
-      searchParams.delete("trending")
-      navigate(`/search?${searchParams}&${name}=${value}`)
-    }
-    else {
-      setFilter(true)
-      searchParams.set(name, value)
-      navigate(`/search?${searchParams}`)
-    }
+    setFilter(true)
+    searchParams.set(name, value)
+    navigate(`/search?${searchParams}`)
   }
 
   function handleDuration() {
-    if (!searchParams.has('lDuration')) {
-      setFilter(true)
-      searchParams.delete("trending")
-      navigate(`/search?${searchParams}&lDuration=${duration[0]}&hDuration=${duration[1]}`)
-    }
-    else {
-      setFilter(true)
-      searchParams.set('lDuration', duration[0])
-      searchParams.set('hDuration', duration[1])
-      navigate(`/search?${searchParams}`)
-    }
+    setFilter(true)
+    searchParams.set('lDuration', duration[0])
+    searchParams.set('hDuration', duration[1])
+    navigate(`/search?${searchParams}`)
   }
   function handleDistance() {
-    if (!searchParams.has('lDistance')) {
-      setFilter(true)
-      searchParams.delete("trending")
-      navigate(`/search?${searchParams}&lDistance=${distance[0]}&hDistance=${distance[1]}`)
-    }
-    else {
-      setFilter(true)
-      searchParams.set('lDistance', distance[0])
-      searchParams.set('hDistance', distance[1])
-      navigate(`/search?${searchParams}`)
-    }
+    setFilter(true)
+    searchParams.set('lDistance', distance[0])
+    searchParams.set('hDistance', distance[1])
+    navigate(`/search?${searchParams}`)
   }
 
   function clearFilter() {
@@ -90,16 +75,15 @@ export default function SearchPlaces() {
     navigate(`/search?trending=true`)
   }
 
+
   function handleLocationWithin(val) {
     navigator.geolocation.getCurrentPosition(async (pos) => {
       setFilter(true)
       const { latitude, longitude } = pos.coords
-      if (!searchParams.has("lat")) {
-        navigate(`/search?lon=${longitude}&lat=${latitude}&within=${locLimit}`)
-      } else {
-        searchParams.set('within', val)
-        navigate(`/search?${searchParams}`)
-      }
+      searchParams.set('lon', longitude)
+      searchParams.set('lat', latitude)
+      searchParams.set('within', val)
+      navigate(`/search?${searchParams}`)
     })
   }
 
@@ -281,6 +265,15 @@ export default function SearchPlaces() {
                 <Link to={`/place/${place._id} `} > <h2 className="text-gray-400 font-bold ml-2 mt-2 hover:cursor-pointer">{place.title}</h2></Link>
               </div>
             ))}
+        </div>
+        <div className="flex gap-2 justify-center mb-4">
+          {[...Array(pages)].map((_, index) => (
+            <div className={`${page === index + 1 ? 'border-2 border-gray-500' : 'border-0'}`}>
+              <button onClick={() => setPage(index + 1)}
+                className="text-white px-2 hover:cursor-pointer"
+              >{index + 1}</button>
+            </div>
+          ))}
         </div>
       </div >
     </div >
