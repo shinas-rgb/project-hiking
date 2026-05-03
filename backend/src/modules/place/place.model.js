@@ -21,7 +21,7 @@ const placeSchema = new mongoose.Schema(
 
     difficulty: {
       type: [String],
-      enum: ['easy', 'moderate', 'hard']
+      enum: ['Easy', 'Moderate', 'Hard']
     },
     bestSeason: [String],
     season: String,
@@ -40,7 +40,11 @@ const placeSchema = new mongoose.Schema(
     rating: {
       type: Number,
       default: 0,
-    }
+    },
+    totalRating: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

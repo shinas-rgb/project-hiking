@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import Place from "./place.model.js"
+import ApiError from "../../utils/ApiError.js"
 
 export const getAllPlaces = async (query) => {
   const page = Number(query.page) || 1
@@ -34,35 +35,35 @@ export const getAllPlaces = async (query) => {
 
 export const createPlace = async (data, userId) => {
   if (!data.title) {
-    throw new Error("Title is required")
+    throw new ApiError(400, "Title is required")
   }
   if (!data.location || !data.location.coordinates) {
-    throw new Error("valid location is required")
+    throw new ApiError(400, "valid location is required")
   }
   if (data.location.coordinates.length !== 2) {
-    throw new Error("Coordinates must be [lng, lat]")
+    throw new ApiError(400, "Coordinates must be [lng, lat]")
   }
 
   const [lng, lat] = data.location.coordinates
 
   if (lng > 180 || lng < -180 || lat > 90 || lat < -90) {
-    throw new Error("Invalid coordinate range")
+    throw new ApiError(400, "Invalid coordinate range")
   }
 
   if (!userId) {
-    throw new Error("User not authenticated")
+    throw new ApiError(401, "User not authenticated")
   }
   if (!data.description) {
-    throw new Error("Description of place is required")
+    throw new ApiError(400, "Description of place is required")
   }
   if (!Array.isArray(data.images) || data.images.length === 0) {
-    throw new Error("Atleast one image is required")
+    throw new ApiError(400, "Atleast one image is required")
   }
   if (data.duration == null) {
-    throw new Error("Duration is required")
+    throw new ApiError(400, "Duration is required")
   }
   if (data.distance == null) {
-    throw new Error("Distance is required")
+    throw new ApiError(400, "Distance is required")
   }
 
   const placeData = {
@@ -76,42 +77,42 @@ export const createPlace = async (data, userId) => {
 
 export const getPlaceById = async (placeID) => {
   if (!placeID) {
-    throw new Error("ID of place is required")
+    throw new ApiError(400, "ID of place is required")
   }
 
   if (!mongoose.Types.ObjectId.isValid(placeID)) {
-    throw new Error("Invalid place ID")
+    throw new ApiError(400, "Invalid place ID")
   }
 
   const place = await Place.findById(placeID)
 
   if (!place) {
-    throw new Error("Place not found")
+    throw new ApiError(404, "Place not found")
   }
   return place
 }
 
 export const updatePlace = async (data, placeId, userId) => {
   if (!placeId) {
-    throw new Error("ID of place is required")
+    throw new ApiError(400, "ID of place is required")
   }
 
   if (!mongoose.Types.ObjectId.isValid(placeId)) {
-    throw new Error("Invalid place ID")
+    throw new ApiError(400, "Invalid place ID")
   }
 
   const place = await Place.findById(placeId)
 
   if (!place) {
-    throw new Error("Place not found")
+    throw new ApiError(404, "Place not found")
   }
 
   if (!userId) {
-    throw new Error("User not authenticated")
+    throw new ApiError(401, "User not authenticated")
   }
 
   if (place.createdBy.toString() !== userId.toString()) {
-    throw new Error("Not authorized")
+    throw new ApiError(403, "Not authorized")
   }
 
   const allowedFields = [
@@ -140,16 +141,16 @@ export const updatePlace = async (data, placeId, userId) => {
   if (updateData.location) {
 
     if (!data.location || !data.location.coordinates) {
-      throw new Error("valid location is required")
+      throw new ApiError(400, "valid location is required")
     }
     if (data.location.coordinates.length !== 2) {
-      throw new Error("Coordinates must be [lng, lat]")
+      throw new ApiError(400, "Coordinates must be [lng, lat]")
     }
 
     const [lng, lat] = data.location.coordinates
 
     if (lng > 180 || lng < -180 || lat > 90 || lat < -90) {
-      throw new Error("Invalid coordinate range")
+      throw new ApiError(400, "Invalid coordinate range")
     }
   }
 
@@ -162,24 +163,24 @@ export const updatePlace = async (data, placeId, userId) => {
 
 export const deletePlace = async (placeId, userId) => {
   if (!userId) {
-    throw new Error("User not authenticated")
+    throw new ApiError(401, "User not authenticated")
   }
 
   if (!placeId) {
-    throw new Error("Place ID is required")
+    throw new ApiError(400, "Place ID is required")
   }
 
   if (!mongoose.Types.ObjectId(placeId).isValid()) {
-    throw new Error("Invalid place ID")
+    throw new ApiError(400, "Invalid place ID")
   }
 
   const place = await Place.findById(placeId)
   if (!place) {
-    throw new Error("Place not found")
+    throw new ApiError(404, "Place not found")
   }
 
   if (place.createdBy.toString() !== userId.toString()) {
-    throw new Error("User not authorized")
+    throw new ApiError(403, "User not authorized")
   }
 
   const deletedPlace = await Place.findByIdAndDelete(placeId)
