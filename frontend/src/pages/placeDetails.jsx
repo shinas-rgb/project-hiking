@@ -18,23 +18,22 @@ export default function PlaceDetails() {
   const [isBook, setIsBook] = useState(false)
 
   useEffect(() => {
-    if (!id) return
     const fetchData = async () => {
       try {
-        const placeRes = await api.get(`/place/${id}`)
-        setPlace(placeRes.data)
+        const placeRes = await api.get(`/places/${id}`)
+        setPlace(placeRes.data.data)
 
-        const reviewRes = await api.get(`/review/place/${id}`)
-        setReviwes(reviewRes.data)
+        const reviewRes = await api.get(`/reviews/${id}`)
+        setReviwes(reviewRes.data.data)
 
-        const userRes = await api.get(`/auth/user/${user.id}`)
-        setUser(userRes.data)
+        const userRes = await api.get(`/users`)
+        setUser(userRes.data.data)
 
-        setIsBook(
-          userRes.data.bookmarks?.some(
-            b => b === placeRes.data._id || b._id === placeRes.data._id
-          )
-        )
+        // setIsBook(
+        //   userRes.data.bookmarks?.some(
+        //     b => b === placeRes.data._id || b._id === placeRes.data._id
+        //   )
+        // )
 
       } catch (error) {
         const message = error.response?.data.message
@@ -44,33 +43,28 @@ export default function PlaceDetails() {
       }
     }
     fetchData()
-  }, [id])
+  }, [newReview])
 
   async function onSubmit(data) {
     try {
-      const res = await api.post('/review', {
-        place: place._id,
-        userId: user.id || user._id,
-        userEmail: user.email,
+      const res = await api.post(`/reviews/${place._id}`, {
         rating: rating,
         review: data.review,
-        placeTitle: place.title,
       })
-      setNewReview(res.data)
-      toast.success(res.data.message)
+      setNewReview(res.data.data)
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
+      toast.error(message)
       console.log(message)
     }
   }
 
   async function addToBookmarks() {
     try {
-      const res = await api.post(`auth/bookmarks/${id}`,
-        { id: user._id })
+      const res = await api.post(`users/bookmarks/add/${place._id}`)
       toast.success(res.data.message)
       setIsBook(true)
-      setUser(res.data.updatedUser)
+      setUser(res.data.data)
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
       toast.error(message)
@@ -79,11 +73,10 @@ export default function PlaceDetails() {
 
   async function removeFromBookmarks() {
     try {
-      const res = await api.delete(`auth/bookmarks/${id}`,
-        { data: { id: user._id } })
+      const res = await api.post(`users/bookmarks/remove/${place._id}`)
       toast.success(res.data.message)
       setIsBook(false)
-      setUser(res.data.updatedUser)
+      setUser(res.data.data)
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
       toast.error(message)
@@ -110,7 +103,7 @@ export default function PlaceDetails() {
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M192 64C156.7 64 128 92.7 128 128L128 544C128 555.5 134.2 566.2 144.2 571.8C154.2 577.4 166.5 577.3 176.4 571.4L320 485.3L463.5 571.4C473.4 577.3 485.7 577.5 495.7 571.8C505.7 566.1 512 555.5 512 544L512 128C512 92.7 483.3 64 448 64L192 64z" /></svg>
                     </button>
                   ) : (
-                    <button onClick={addToBookmarks}>
+                    <button onClick={addToBookmarks} className="p-3 rounded-full">
                       <svg className="object-cover h-8 fill-gray-700 hover:fill-gray-500 hover:cursor-pointer m-4" title="hi"
                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M192 64C156.7 64 128 92.7 128 128L128 544C128 555.5 134.2 566.2 144.2 571.8C154.2 577.4 166.5 577.3 176.4 571.4L320 485.3L463.5 571.4C473.4 577.3 485.7 577.5 495.7 571.8C505.7 566.1 512 555.5 512 544L512 128C512 92.7 483.3 64 448 64L192 64z" /></svg>
                     </button>
@@ -174,7 +167,7 @@ export default function PlaceDetails() {
                       ))}
                     </div>
                     <div className="flex justify-end mr-35 max-sm:mr-0">
-                      <button className="bg-gray-400 py-2 px-4 rounded-xl hover:cursor-pointer text-black">Submit</button>
+                      <button className="bg-gray-400 py-2 px-4 rounded-xl hover:cursor-pointer text-black" type="submit">Submit</button>
                     </div>
                   </form>
                 </div>
@@ -186,7 +179,7 @@ export default function PlaceDetails() {
                 <div className="text-white  flex flex-col gap-4">
                   {reviews.map((review) => (
                     <div key={review._id} className="bg-gray-600 p-2">
-                      <h4 className="bg-gray-700 pl-4">{review.userEmail}</h4>
+                      <h4 className="bg-gray-700 pl-4">{review.userName}</h4>
                       <p className="ml-4">{review.review}</p>
                       <div className="flex">
                         {[1, 2, 3, 4, 5].map((star) => (

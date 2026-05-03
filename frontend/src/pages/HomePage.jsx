@@ -3,7 +3,6 @@ import SearchBar from "../components/SearchBar.jsx"
 import { Link } from "react-router-dom"
 
 export default function HomePage() {
-
   return (
     <div
       className='page mb-8 max-w-full'>

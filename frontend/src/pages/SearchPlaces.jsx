@@ -34,9 +34,9 @@ export default function SearchPlaces() {
         const res = await api.get(`/places`, {
           params: searchParams
         })
-        setPlaces(res.data.places)
-        setPages(res.data.totalPages)
-        console.log(res.data)
+        setPlaces(res.data.data.places)
+        setPages(res.data.data.totalPages)
+        console.log(res.data.message)
         if (!searchParams.has("trending"))
           setFilter(true)
       } catch (error) {
@@ -261,14 +261,16 @@ export default function SearchPlaces() {
           {places?.length > 0 &&
             places.map((place) => (
               <div className="" key={place._id}>
-                <img className="rounded-t-2xl object-cover w-full sm:h-96 h-28" src={place.images[0]?.url} alt="" />
-                <Link to={`/place/${place._id} `} > <h2 className="text-gray-400 font-bold ml-2 mt-2 hover:cursor-pointer">{place.title}</h2></Link>
+                <Link to={`/place/${place._id} `} >
+                  <img className="rounded-t-2xl object-cover w-full sm:h-96 h-28" src={place.images[0]?.url} alt="" />
+                  <h2 className="text-gray-400 font-bold ml-2 mt-2 hover:cursor-pointer">{place.title}</h2>
+                </Link>
               </div>
             ))}
         </div>
         <div className="flex gap-2 justify-center mb-4">
           {[...Array(pages)].map((_, index) => (
-            <div className={`${page === index + 1 ? 'border-2 border-gray-500' : 'border-0'}`}>
+            <div key={index} className={`${page === index + 1 ? 'border-2 border-gray-500' : 'border-0'}`}>
               <button onClick={() => setPage(index + 1)}
                 className="text-white px-2 hover:cursor-pointer"
               >{index + 1}</button>

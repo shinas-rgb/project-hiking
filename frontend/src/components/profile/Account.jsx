@@ -19,22 +19,8 @@ export default function Account() {
     navigate('/')
   }
 
-  async function deleteAccount(data) {
-    try {
-      const res = await api.delete('/auth', {
-        data: {
-          id: user.id,
-          password: data.password
-        }
-      })
-      localStorage.removeItem("token")
-      setUser(null)
-      toast.success(res.data.message)
-      navigate('/')
-    } catch (error) {
-      const message = error.response?.data?.message || "Something went wrong"
-      toast.error(message)
-    }
+  async function deleteAccount() {
+    toast.error("Under Maintenance")
   }
   return (
     <>
@@ -56,7 +42,6 @@ export default function Account() {
             </form>
           </Overlay>
         )}
-        <h1 className="text-2xl">Hello {user.email.split('@')[0]}</h1>
         <div className="flex gap-4 mt-8 max-sm:flex-col">
           <button onClick={logoutUser} className="text-4 bg-gray-500 py-2 px-4 font-bold rounded-xl hover:cursor-pointer">Logout</button>
           <button onClick={() => setOpen(true)} className="text-4 bg-red-500 py-2 px-4 font-bold rounded-xl hover:cursor-pointer">Delete My Account</button>

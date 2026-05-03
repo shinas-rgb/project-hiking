@@ -9,30 +9,30 @@ export default function AuthPage() {
   const { register, handleSubmit } = useForm()
   const [mode, setMode] = useState("login")
   const navigate = useNavigate()
-  const user = checkUser()
+  const [user, setUser] = useState(checkUser())
 
 
   async function onSubmit(data) {
     try {
-      if (mode !== 'login') {
-        await api.post("/auth/signup", {
+      if (mode === 'signup') {
+        const res = await api.post("/users/signup", {
+          name: data.name,
           email: data.email,
           password: data.password,
         })
-          .then((response) => toast.success(response.data.message))
+        toast.success(res.data.message)
+        setMode('login')
+      } else if (mode === 'login') {
+        const res = await api.post("/users/login", {
+          email: data.email,
+          password: data.password,
+        })
+        localStorage.setItem("token", res.data.data.token)
+        setUser(res.data.data.user)
+        console.log(res.data.data.user)
+        toast.success(res.data.message)
+        navigate('/')
       }
-
-      await api.post("/auth/login", {
-        email: data.email,
-        password: data.password,
-      })
-        .then((response) => {
-          toast.success(response.data.message)
-          localStorage.setItem("token", response.data.token)
-        });
-
-      localStorage.setItem("user", data.email)
-      navigate('/')
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
       localStorage.removeItem("token")
@@ -51,6 +51,13 @@ export default function AuthPage() {
           onSubmit={handleSubmit(onSubmit)}
 
           className="new-form align-text-top sm:gap-2">
+          {mode === 'signup' && (
+            <input
+              className="input-field max-sm:mb-2"
+              type="text"
+              placeholder="Your Name"
+              {...register('name', { required: 'Name is Required' })} />
+          )}
           <input
             className="input-field max-sm:mb-2"
             type="email"
