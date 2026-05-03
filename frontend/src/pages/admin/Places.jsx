@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form"
 import api from "../../api/api"
 import toast from "react-hot-toast"
 import { useNavigate, useParams } from "react-router-dom"
-import Overlay from "../Overlay"
+import Overlay from "../../components/Overlay"
 
 export default function Places() {
   const { register, reset, handleSubmit } = useForm()

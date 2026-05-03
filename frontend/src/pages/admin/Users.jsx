@@ -3,7 +3,7 @@ import toast from "react-hot-toast"
 import api from "../../api/api"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useForm } from "react-hook-form"
-import Overlay from "../Overlay"
+import Overlay from "../../components/Overlay"
 
 export default function Users() {
   const [user, setUser] = useState(null)
