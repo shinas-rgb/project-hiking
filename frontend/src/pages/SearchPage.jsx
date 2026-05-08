@@ -36,12 +36,11 @@ export default function SearchPlaces() {
         })
         setPlaces(res.data.data.places)
         setPages(res.data.data.totalPages)
-        console.log(res.data.message)
         if (!searchParams.has("trending"))
           setFilter(true)
       } catch (error) {
         const message = error.response?.data?.message || "Something went wrong"
-        console.error(message)
+        console.log(message)
       } finally {
         setLoading(false)
       }
@@ -72,6 +71,8 @@ export default function SearchPlaces() {
   function clearFilter() {
     setFilter(false)
     setLocLimit(5)
+    setSortDirection(1)
+    setSortBy("")
     navigate(`/search?trending=true`)
   }
 
@@ -102,14 +103,15 @@ export default function SearchPlaces() {
   }
 
 
-  function handleSort(updatedSortBy = sortBy, updatedDirection = sortDirection) {
-    if (!updatedSortBy) return
+  function handleSort(value, direction) {
+    if (value !== "duration" && value !== "distance") return
 
-    const params = searchParams
-    params.set(updatedSortBy, updatedDirection)
+    searchParams.delete("distance")
+    searchParams.delete("duration")
+    searchParams.set(value, direction)
     setFilter(true)
 
-    navigate(`/search?${params}`)
+    navigate(`/search?${searchParams}`)
   }
 
   if (loading) {
@@ -135,31 +137,34 @@ export default function SearchPlaces() {
                   <div className="flex max-sm:flex-col justify-around gap-2 mb-4">
                     <div className="text-center max-sm:flex max-sm:flex-col max-sm:items-center">
                       <p>Difficulty</p>
-                      <fieldset onChange={handleChange} className="border-2 p-2 max-sm:w-fit bg-gray-600 text-white border-black rounded-xl">
-                        <select name="difficulty" value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
+                      <fieldset onChange={handleChange}>
+                        <select name="difficulty" value={difficulty} onChange={(e) => setDifficulty(e.target.value)}
+                          className="border-2 p-2 max-sm:w-fit bg-gray-600 text-white border-black rounded-xl">
                           <option value="">All difficulty</option>
-                          <option value="easy">Easy</option>
-                          <option value="moderate">Moderate</option>
-                          <option value="hard">Hard</option>
+                          <option value="Easy">Easy</option>
+                          <option value="Moderate">Moderate</option>
+                          <option value="Hard">Hard</option>
                         </select>
                       </fieldset>
                     </div>
                     <div className="text-center max-sm:flex max-sm:flex-col max-sm:items-center">
                       <p>Season</p>
-                      <fieldset onChange={handleChange} className="border-2 max-sm:w-fit p-2 bg-gray-600 text-white border-black rounded-xl">
-                        <select name="bestSeason" value={season} onChange={(e) => setSeason(e.target.value)}>
+                      <fieldset onChange={handleChange}>
+                        <select name="bestSeason" value={season} onChange={(e) => setSeason(e.target.value)}
+                          className="border-2 max-sm:w-fit p-2 bg-gray-600 text-white border-black rounded-xl">
                           <option value="">All Season</option>
-                          <option value="winter">Winter</option>
-                          <option value="summer">Summer</option>
-                          <option value="monsoon">Monsoon</option>
+                          <option value="Winter">Winter</option>
+                          <option value="Summer">Summer</option>
+                          <option value="Monsoon">Monsoon</option>
                           <option value="Autunm">Autunm</option>
                         </select>
                       </fieldset>
                     </div>
                     <div className="text-center max-sm:flex max-sm:flex-col max-sm:items-center">
                       <p>District</p>
-                      <fieldset onChange={handleChange} className="border-2 p-2 max-sm:w-fit bg-gray-600 text-white border-black rounded-xl">
-                        <select name="district" value={district} onChange={(e) => setDistrict(e.target.value)}>
+                      <fieldset onChange={handleChange}>
+                        <select name="district" value={district} onChange={(e) => setDistrict(e.target.value)}
+                          className="border-2 max-sm:w-fit p-2 bg-gray-600 text-white border-black rounded-xl">
                           <option value="">All districts</option>
                           <option value="wayanad">Wayanad</option>
                           <option value="theni">Theni</option>
@@ -214,32 +219,24 @@ export default function SearchPlaces() {
                 <div className="flex">
                   <fieldset onChange={handleSort}>
                     <select name="sort" value={sortBy} onChange={(e) => {
-                      const value = e.target.value
-                      setSortBy(value)
-                      handleSort(value, sortDirection)
-                    }}>
+                      setSortBy(e.target.value)
+                      handleSort(e.target.value, sortDirection)
+                    }} className="bg-gray-950 p-2">
                       <option value="">Sort</option>
                       <option value="distance">Distance</option>
                       <option value="duration">Duration</option>
                     </select>
                   </fieldset>
-                  {sortDirection === 1 ? (
-                    <button onClick={() => {
-                      const newDirection = -1
-                      setSortDirection(newDirection);
-                      handleSort(sortBy, newDirection)
-                    }}>
-                      <h1>v</h1>
-                    </button>
-                  ) : (
-                    <button onClick={() => {
-                      const newDirection = 1
-                      setSortDirection(newDirection);
-                      handleSort(sortBy, newDirection);
-                    }}>
-                      <h1 className="text-2xl">^</h1>
-                    </button>
-                  )}
+                  <select onChange={(e) => {
+                    const value = e.target.value
+                    setSortDirection(e.target.value)
+                    handleSort(sortBy, value)
+                  }}
+                    className="bg-gray-400 text-black text-xs"
+                  >
+                    <option value={1}>Low - High</option>
+                    <option value={-1}>High - Low</option>
+                  </select>
                 </div>
               </div>
             </div>

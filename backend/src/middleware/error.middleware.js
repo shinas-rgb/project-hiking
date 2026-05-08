@@ -14,5 +14,6 @@ export const errorHandler = (err, req, res, next) => {
     message = "Duplicate field vallue"
   }
 
+  console.log(message)
   res.status(statusCode).json({ success: false, message })
 }

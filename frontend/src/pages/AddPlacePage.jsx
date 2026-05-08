@@ -3,14 +3,14 @@ import toast, { Toaster } from "react-hot-toast"
 import api from "../api/api"
 import NavBar from "../components/Navbar.jsx"
 import { useState } from "react"
-import { checkUser } from "../utils/auth.js"
+import { useNavigate } from "react-router-dom"
 
 export default function AddPlace() {
   const { register, handleSubmit } = useForm()
   const [tips, setTips] = useState([""])
   const [features, setFeatures] = useState([""])
   const [files, setFiles] = useState(null)
-  const user = checkUser()
+  const navigate = useNavigate()
 
   async function onSubmit(data) {
     try {
@@ -22,9 +22,9 @@ export default function AddPlace() {
       }
 
       const imageRes = await api.post('/upload', formData)
-      const uploadedImages = imageRes.data
+      const uploadedImages = imageRes.data.data
 
-      const res = await api.post("/place", {
+      const res = await api.post("/places", {
         title: data.title,
         description: data.description,
         images: uploadedImages,
@@ -41,12 +41,9 @@ export default function AddPlace() {
         features: features,
         duration: data.duration,
         distance: data.distance,
-        trending: true,
-        createdBy: user.id,
-        rating: 0,
       })
       toast.success(res.data.message)
-      console.log(uploadedImages)
+      navigate("/")
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
       toast.error(message)

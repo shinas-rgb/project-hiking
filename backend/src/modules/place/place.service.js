@@ -1,12 +1,14 @@
 import mongoose from "mongoose"
 import Place from "./place.model.js"
 import ApiError from "../../utils/ApiError.js"
+import User from "../user/user.model.js"
 
-export const getAllPlaces = async (query) => {
+export const getAllPlaces = async (query, userId) => {
   const page = Number(query.page) || 1
   const limit = Math.min(Number(query.limit) || 10, 50)
 
   const filter = {}
+  const sort = {}
 
   if (query.q && query.q.trim().length > 2) filter.title = {
     $regex: query.q.trim(),
@@ -18,8 +20,57 @@ export const getAllPlaces = async (query) => {
     if (query.trending === 'false') filter.trending = false
   }
 
+  if (query.difficulty) filter.difficulty = query.difficulty
+  if (query.bestSeason) filter.bestSeason = query.bestSeason
+
+  if (query.hDuration || query.lDuration) {
+    query.duration = {}
+    if (query.lDuration) filter.duration.$gte = query.lDuration
+    if (query.hDuration) filter.duration.$lte = query.hDuration
+  }
+  if (query.hDistance || query.lDistance) {
+    query.distance = {}
+    if (query.lDistance) filter.distance.$gte = query.lDistance
+    if (query.hDistance) filter.distance.$lte = query.hDistance
+  }
+
+  if (query.lon && query.lat && query.within) filter.location = {
+    $near: {
+      $geometry: {
+        type: 'Point',
+        coordinates: [lon, lat]
+      },
+      $maxDistance: Number(within) * 1000
+    }
+  }
+
+  if (query.distance) {
+    const distanceSort = Number(query.distance)
+    if (distanceSort === 1 || distanceSort === -1) {
+      sort.distance = distanceSort
+    }
+  }
+
+  if (query.duration) {
+    const durationSort = Number(query.duration)
+    if (durationSort === 1 || durationSort === -1) {
+      sort.duration = durationSort
+    }
+  }
+
+  if (!query.distance && !query.duration) {
+    sort.createdAt = -1
+  }
+
+  if (query.district) {
+    filter.description = {
+      $regex: query.district,
+      $options: "i"
+    }
+  }
+
   const places = await Place.find(filter)
-    .sort({ createdAt: -1 })
+    .sort(sort)
     .skip((page - 1) * limit)
     .limit(limit)
 

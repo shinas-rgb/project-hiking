@@ -11,7 +11,7 @@ export const getAllPlacesController = asyncHandler(async (req, res) => {
 
 export const createPlaceController = asyncHandler(async (req, res) => {
   const userId = req.user.id
-  const result = await placeService.createPlace(req.data, userId)
+  const result = await placeService.createPlace(req.body, userId)
   res.status(201).json(
     new ApiResponse(201, result, "Place created")
   )

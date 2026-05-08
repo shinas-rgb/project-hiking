@@ -28,9 +28,126 @@
   font-style: normal;
 }
 
+@theme {
+  --color-dark: #09090B;
+  --color-red-200: #ffcaca;
+  --color-red-300: #ffa3a3;
+  --color-red-400: #ff6568;
+  --color-red-500: #fb2c36;
+  --color-red-600: #e40014;
+  --color-red-700: #bf000f;
+  --color-red-900: #82181a;
+  --color-orange-200: #ffd7a8;
+  --color-orange-300: #ffb96d;
+  --color-orange-400: #ff8b1a;
+  --color-orange-500: #fe6e00;
+  --color-orange-600: #f05100;
+  --color-orange-700: #c53c00;
+  --color-orange-900: #7e2a0c;
+  --color-amber-400: #fcbb00;
+  --color-amber-500: #f99c00;
+  --color-amber-600: #dd7400;
+  --color-amber-700: #b75000;
+  --color-amber-950: #461901;
+  --color-yellow-300: #ffe02a;
+  --color-yellow-400: #fac800;
+  --color-yellow-600: #cd8900;
+  --color-yellow-700: #a36100;
+  --color-yellow-950: #432004;
+  --color-lime-300: #bbf451;
+  --color-lime-400: #9de500;
+  --color-lime-600: #62a400;
+  --color-lime-700: #4b7d00;
+  --color-lime-950: #192e03;
+  --color-green-400: #05df72;
+  --color-green-500: #00c758;
+  --color-green-600: #00a544;
+  --color-green-700: #008138;
+  --color-green-900: #0d542b;
+  --color-emerald-400: #00d294;
+  --color-emerald-500: #00bb7f;
+  --color-emerald-600: #009767;
+  --color-emerald-700: #007956;
+  --color-emerald-900: #004e3b;
+  --color-teal-300: #46ecd5;
+  --color-teal-500: #00baa7;
+  --color-teal-600: #009588;
+  --color-teal-700: #00776e;
+  --color-teal-900: #0b4f4a;
+  --color-cyan-300: #53eafd;
+  --color-cyan-400: #00d2ef;
+  --color-cyan-500: #00b7d7;
+  --color-cyan-700: #007492;
+  --color-cyan-950: #053345;
+  --color-sky-300: #77d4ff;
+  --color-sky-500: #00a5ef;
+  --color-sky-600: #0084cc;
+  --color-sky-700: #0069a4;
+  --color-sky-900: #024a70;
+  --color-blue-300: #90c5ff;
+  --color-blue-400: #54a2ff;
+  --color-blue-500: #3080ff;
+  --color-blue-600: #155dfc;
+  --color-blue-700: #1447e6;
+  --color-blue-900: #1c398e;
+  --color-indigo-200: #c7d2ff;
+  --color-indigo-300: #a4b3ff;
+  --color-indigo-400: #7d87ff;
+  --color-indigo-500: #625fff;
+  --color-indigo-600: #4f39f6;
+  --color-indigo-700: #432dd7;
+  --color-indigo-900: #312c85;
+  --color-violet-200: #ddd6ff;
+  --color-violet-300: #c4b4ff;
+  --color-violet-400: #a685ff;
+  --color-violet-500: #8d54ff;
+  --color-violet-600: #7f22fe;
+  --color-violet-700: #7008e7;
+  --color-violet-900: #4d179a;
+  --color-purple-200: #e9d5ff;
+  --color-purple-300: #d9b3ff;
+  --color-purple-400: #c07eff;
+  --color-purple-500: #ac4bff;
+  --color-purple-600: #9810fa;
+  --color-purple-700: #8200da;
+  --color-purple-900: #59168b;
+  --color-fuchsia-200: #f6cfff;
+  --color-fuchsia-300: #f2a9ff;
+  --color-fuchsia-400: #ec6cff;
+  --color-fuchsia-500: #e12afb;
+  --color-fuchsia-600: #c600db;
+  --color-fuchsia-700: #a600b5;
+  --color-fuchsia-900: #721378;
+  --color-pink-200: #fccee8;
+  --color-pink-300: #fda5d5;
+  --color-pink-400: #fb64b6;
+  --color-pink-500: #f6339a;
+  --color-pink-600: #e30076;
+  --color-pink-700: #c4005c;
+  --color-pink-900: #861043;
+  --color-rose-200: #ffccd3;
+  --color-rose-300: #ffa2ae;
+  --color-rose-400: #ff667f;
+  --color-rose-500: #ff2357;
+  --color-rose-600: #e70044;
+  --color-rose-700: #c20039;
+  --color-rose-900: #8b0836;
+  --color-zinc-100: #f4f4f5;
+  --color-zinc-200: #e4e4e7;
+  --color-zinc-300: #d4d4d8;
+  --color-zinc-400: #9f9fa9;
+  --color-zinc-450: #5C5C65;
+  --color-zinc-500: #71717b;
+  --color-zinc-600: #52525c;
+  --color-zinc-700: #3f3f46;
+  --color-zinc-800: #27272a;
+  --color-zinc-900: #18181b;
+  --color-zinc-950: #09090b;
+}
+
 body {
   margin: 0;
-  background-color: #161518;
+  background-color: #18181B;
 }
 
 h1 {
@@ -40,6 +157,10 @@ h1 {
 }
 
 h2 {
+  font-family: 'CanvaSans-Bold', sans-serif;
+}
+
+h3 {
   font-family: 'CanvaSans-Bold', sans-serif;
 }
 
@@ -136,8 +257,22 @@ td {
   input {
     margin-left: 1rem;
   }
-  label{
+
+  label {
     margin-left: 0.3rem;
   }
 
+}
+
+html,
+body {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+body::-webkit-scrollbar {
+  display: none;
+  /* Chrome, Safari, Opera */
 }

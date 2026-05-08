@@ -1,43 +1,113 @@
 import Navbar from '../components/Navbar.jsx'
-import SearchBar from "../components/SearchBar.jsx"
-import { Link } from "react-router-dom"
+import img1 from "../assets/pexels-ashok-sharma-78565317-8680763.jpg"
+import img2 from "../assets/pexels-ex-route-adventures-656223369-19716647.jpg"
+import img3 from "../assets/pexels-ex-route-adventures-656223369-32109154.jpg"
+import img4 from "../assets/pexels-jen-madhi-1597353-12121705.jpg"
+import img5 from "../assets/pexels-k-s-aravinda-kashyap-86628820-31580155.jpg"
+import img0 from "../assets/pexels-tom-fly-2150802027-31410276.jpg"
+import { Link } from "react-router-dom";
 
 export default function HomePage() {
   return (
     <div
       className='page mb-8 max-w-full'>
       <Navbar />
-      <div className='mt-4'>
-        <SearchBar />
-      </div>
-      <div className='mt-8 grid justify-center  text-center' >
-        <div className=" bg-gray-600 p-4 flex flex-col gap-4">
-          <h2 className="text-3xl max-sm:text-xl">Welcome to Trek wiki of Kerala</h2>
-          <p className="max-sm:text-xs">The free wiki pidea for Hikers and Trekkers, where discover hidden places in kerala</p>
-        </div>
-      </div >
-      {/* <TrendingPosts /> */}
-      <div className="grid justify-center content-center items-center text-xl   w-full  ">
-        <div className="w-fit italic text-gray-400 border-2 rounded-xl p-4 mt-8 max-sm:text-xs max-sm:p-2 max-sm:m-8">
-          <h3>“The best view comes after the hardest climb.”</h3>
-          <h3> “Hiking is not escape — it’s connection.” </h3>
-          <h3> “Take only memories, leave only footprints.” </h3>
-          <h3> “Every mountain top is within reach if you keep climbing.” </h3>
-          <h3> “In every walk with nature, one receives far more than they seek.” — John Muir </h3>
-          <h3> “Go where you feel most alive.” </h3>
-          <h3> “The mountains are calling, and I must go.” — John Muir</h3>
-        </div>
-      </div>
-      <div className="px-8 py-8">
-        <div className="h-1 w-full bg-gray-600 my-4">
-        </div>
-        <div className="flex justify-around">
-          <button className="text-white hover:text-gray-300 hover:cursor-pointer">Contact</button>
-          <Link to="/add-place">
-            <button className=" text-white hover:text-gray-300  hover:cursor-pointer">Add new Place</button>
-          </Link>
+      {/* Hero section */}
+      <div className="relative z-10 isolate px-6 lg:px-8">
+        <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-52">
+          <div className="text-center">
+            <h1 className="text-5xl font-semibold text-white sm:text-6xl">
+              Find and explore hidden and adventerous trekking spots
+            </h1>
+
+            <p className="mt-8 text-lg text-gray-400">
+              The wiki pidea for Hikers, where discover hidden places
+            </p>
+
+            <div className="mt-10 flex items-center justify-center gap-x-6">
+              <Link to="/auth">
+                <button type=""
+                  className="border font-semibold border-zinc-700  bg-zinc-900 px-3.5 py-2.5 rounded-md text-white
+                hover:border-zinc-600 hover:bg-zinc-800 hover:cursor-pointer">
+                  Get Started
+                </button>
+              </Link>
+              <a href="#" className="text-sm font-semibold text-white">
+                Find Places →
+              </a>
+            </div>
+          </div>
         </div>
       </div>
+
+      <section className="overflow-hidden pb-16">
+        <div
+          className="absolute inset-0 bg-cover bg-center border-b-2 border-white"
+          style={{
+            backgroundImage: `url(${img0})`,
+          }}
+        >
+        </div>
+        <div className="absolute inset-0 bg-black/70" />
+        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
+
+            {/* LEFT SIDE */}
+            <div className="space-y-8">
+              <h1 className="text-5xl font-bold tracking-tight text-white sm:text-5xl">
+                “ In every walk with nature, one receives far more than they seek ”
+              </h1>
+              <h1 className="text-5xl font-bold justify-self-end mr-18 tracking-tight text-white sm:text-3xl">
+                — John Muir
+              </h1>
+            </div>
+
+            {/* RIGHT SIDE IMAGE TILES */}
+            <div className="grid grid-cols-3 gap-8">
+
+              {/* COLUMN 1 */}
+              <div className="space-y-6 pt-32">
+                <img
+                  src={img1}
+                  alt=""
+                  className="aspect-[2/3] w-full rounded-3xl object-cover"
+                />
+
+                <img
+                  src={img2}
+                  alt=""
+                  className="aspect-[2/3]  w-full rounded-3xl object-cover"
+                />
+              </div>
+
+              {/* COLUMN 2 */}
+              <div className="space-y-6">
+                <img
+                  src={img3}
+                  alt=""
+                  className="aspect-[2/3] w-full rounded-3xl object-cover"
+                />
+
+                <img
+                  src={img4}
+                  alt=""
+                  className="aspect-[2/3] w-full rounded-3xl object-cover"
+                />
+              </div>
+
+              {/* COLUMN 3 */}
+              <div className="space-y-6 pt-20">
+                <img
+                  src={img5}
+                  alt=""
+                  className="aspect-[2/3] w-full rounded-3xl object-cover"
+                />
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
     </div >
   )
 }

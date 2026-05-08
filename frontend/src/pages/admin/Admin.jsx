@@ -11,20 +11,26 @@ export default function Admin() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [userRes, placeRes] = await Promise.all([
-          api.get('/auth/users'),
-          api.get('/place')
-        ])
-        setUsers(userRes.data)
-        setPlaces(placeRes.data)
-        setLoading(false)
+        const userRes = await api.get('/admin/users')
+        setUsers(userRes.data.data)
+
+        const placeRes = await api.get('/admin/places')
+        setPlaces(placeRes.data.data)
       } catch (error) {
         const message = error.response?.data?.message || "Something went wrong"
         toast.error(message)
+      } finally {
+        setLoading(false)
       }
     }
     fetchData()
   }, [])
+
+  if (loading) {
+    return <div className="flex justify-center text-xl items-center h-screen">
+      <h1>Loading...</h1>
+    </div>
+  }
   return (
     <>
       <div className="ml-4">
