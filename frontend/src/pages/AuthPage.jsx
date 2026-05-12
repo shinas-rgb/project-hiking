@@ -2,7 +2,6 @@ import { useState } from "react"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
-import { checkUser } from "../utils/auth.js"
 import api from "../api/api.js"
 import img from "../assets/pexels-nepal-visuals-2154640351-33330007.jpg"
 
@@ -10,7 +9,6 @@ export default function AuthPage() {
   const { register, handleSubmit, formState: { errors } } = useForm()
   const [mode, setMode] = useState("login")
   const navigate = useNavigate()
-  const [user, setUser] = useState(checkUser())
 
 
   async function onSubmit(data) {
@@ -29,8 +27,6 @@ export default function AuthPage() {
           password: data.password,
         })
         localStorage.setItem("token", res.data.data.token)
-        setUser(res.data.data.user)
-        console.log(res.data.data.user)
         toast.success(res.data.message)
         navigate('/')
       }
@@ -43,8 +39,8 @@ export default function AuthPage() {
   return (
     <div className="h-screen mx-20 border-l border-r border-zinc-700">
       <h1 className="absolute top-6 left-28 text-2xl font-extrabold">Trek wiki</h1>
-      <div className="grid grid-cols-2  h-screen bg-zinc-800 ">
-        <img className="p-4 w-full h-full object-cover overflow-hidden object-center bg-cover" src={img} alt="" />
+      <div className="grid grid-cols-2  h-screen bg-zinc-800">
+        <img className="mx-4 w-full h-full object-cover overflow-hidden object-center bg-cover rounded-xl" src={img} alt="" />
         <div className="px-28 flex flex-col justify-center h-screen">
           <div className="mb-8">
             <h1 className="text-5xl leading-14 mb-2">
