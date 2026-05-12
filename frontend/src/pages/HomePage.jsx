@@ -38,7 +38,7 @@ export default function HomePage() {
                 </Link>
               )}
             </div>
-            <div className='mt-auto mb-16 text-sm  bg-white text-center font-semibold text-black py-4 rounded-full w-full'>
+            <div className='mt-auto mb-20 text-sm  bg-white text-center font-semibold text-black py-4 rounded-full w-full'>
               <a href="/search">
                 Explore the world
               </a>
