@@ -23,7 +23,7 @@ export default function HomePage() {
               Travel Without Limits
             </h2>
 
-            <p className="mt-8 text-xl font-bold text-gray-900">
+            <p className="mt-8 text-base font-bold text-zinc-300">
               The wiki pidea for Hikers, where discover hidden places
             </p>
 
