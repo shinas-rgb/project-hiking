@@ -59,7 +59,7 @@ export const getAllPlaces = async (query, userId) => {
   }
 
   if (!query.distance && !query.duration) {
-    sort.createdAt = -1
+    sort.rating = -1
   }
 
   if (query.district) {
@@ -140,10 +140,29 @@ export const getPlaceById = async (placeID) => {
   if (!place) {
     throw new ApiError(404, "Place not found")
   }
-  return place
+  return {
+    place: {
+      _id: place._id,
+      title: place.title,
+      description: place.description,
+      features: place.features,
+      images: place.images,
+      location: place.location,
+      difficulty: place.difficulty,
+      bestSeason: place.bestSeason,
+      season: place.season,
+      bestTime: place.bestTime,
+      route: place.route,
+      tips: place.tips,
+      duration: place.duration,
+      distance: place.distance,
+      rating: place.rating
+    }
+  }
 }
 
 export const updatePlace = async (data, placeId, userId) => {
+  console.log(data, placeId, userId)
   if (!placeId) {
     throw new ApiError(400, "ID of place is required")
   }
@@ -162,7 +181,7 @@ export const updatePlace = async (data, placeId, userId) => {
     throw new ApiError(401, "User not authenticated")
   }
 
-  if (place.createdBy.toString() !== userId.toString()) {
+  if (!place.createdBy || place.createdBy.toString() !== userId.toString()) {
     throw new ApiError(403, "Not authorized")
   }
 

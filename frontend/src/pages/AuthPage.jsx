@@ -4,15 +4,18 @@ import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
 import api from "../api/api.js"
 import img from "../assets/pexels-nepal-visuals-2154640351-33330007.jpg"
+import Loader from "../components/Loader.jsx"
 
 export default function AuthPage() {
   const { register, handleSubmit, formState: { errors } } = useForm()
   const [mode, setMode] = useState("login")
   const navigate = useNavigate()
+  const [load, setLoad] = useState(false)
 
 
   async function onSubmit(data) {
     try {
+      setLoad(true)
       if (mode === 'signup') {
         const res = await api.post("/users/signup", {
           name: data.name,
@@ -33,36 +36,34 @@ export default function AuthPage() {
     } catch (error) {
       const message = error.response?.data?.message || "Something went wrong"
       localStorage.removeItem("token")
+      console.log(message)
       toast.error(message)
+    } finally {
+      setLoad(false)
     }
+  }
+
+  function handleLoad() {
+    if (load) return <Loader />
+    if (mode === 'login') return 'login'
+    if (mode === 'signup') return 'signup'
   }
   return (
     <div className="h-screen sm:mx-20 border-l border-r border-zinc-700">
       <h1 className="absolute sm:top-6 top-3 max-sm:hidden left-3 sm:left-28 text-2xl font-extrabold">Trek wiki</h1>
-      <div className="grid sm:grid-cols-2  h-screen sm:bg-zinc-800">
-        <img className="mx-4 w-full h-full object-cover overflow-hidden object-center bg-cover rounded-xl" src={img} alt="" />
-        <div className="sm:px-28 px-14 flex flex-col justify-center h-screen max-sm:bg-zinc-800">
+      <div className="grid sm:grid-cols-2 grid-cols-1 h-screen sm:bg-zinc-800">
+        <img className="mx-4 w-full h-full max-sm:hidden object-cover overflow-hidden object-center bg-cover rounded-xl" src={img} alt="" />
+        <div className="sm:px-28 px-8 flex flex-col justify-center h-screen max-sm:bg-zinc-800">
           <div className="sm:mb-8 mb-4">
-            <h1 className="sm:text-5xl text-3xl sm:leading-14 sm:mb-2 mb-4">
+            <h1 className="sm:text-5xl text-4xl sm:leading-14 sm:mb-2 mb-2">
               {mode === "login" ? (
                 'Login to your account '
               ) : (
                 'Create an account '
               )}
             </h1>
-            {mode === 'login' ? (
-              <p className="text-zinc-300">Don't have an account ? <a className="text-blue-500 hover:underline hover:cursor-pointer"
-                onClick={() => setMode("signup")}
-              >Sign Up
-              </a> </p>
-            ) : (
-              <p className="text-zinc-300">Already have an account ? <a className="text-blue-500 hover:underline hover:cursor-pointer"
-                onClick={() => setMode("login")}
-              >Login
-              </a> </p>
-            )}
           </div>
-          <form className="flex flex-col gap-4 text-zinc-300"
+          <form className="flex flex-col gap-4 text-zinc-300 my-4"
             onSubmit={handleSubmit(onSubmit)}>
             {mode === 'signup' && (
               <div>
@@ -106,16 +107,23 @@ export default function AuthPage() {
               </div>
             )}
             <button
-              className="bg-zinc-300 mt-2 text-zinc-700 py-2 rounded-md
+              className="bg-zinc-300 mt-2 text-zinc-700 py-2 rounded-md flex justify-center
                 hover:cursor-pointer hover:bg-zinc-400 hover:text-zinc-800"
               type="submit">
-              {mode === 'login' ? (
-                'Log In'
-              ) : (
-                'Sign Up'
-              )}
+              {handleLoad()}
             </button>
           </form>
+          {mode === 'login' ? (
+            <p className="text-zinc-300 text-center">Don't have an account ? <a className="text-blue-500 hover:underline hover:cursor-pointer"
+              onClick={() => setMode("signup")}
+            >Sign Up
+            </a> </p>
+          ) : (
+            <p className="text-zinc-300 text-center">Already have an account ? <a className="text-blue-500 hover:underline hover:cursor-pointer"
+              onClick={() => setMode("login")}
+            >Login
+            </a> </p>
+          )}
         </div>
       </div>
     </div>

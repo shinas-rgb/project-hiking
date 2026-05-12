@@ -4,7 +4,7 @@ export default function Overlay({ isOpen, onClose, children }) {
   if (!isOpen) return null
   return createPortal(
     <div style={styles.overlay} onClick={onClose}>
-      <div style={styles.panel} onClick={(e) => e.stopPropagation()}> {children} </div>
+      <div className="mx-26" style={styles.panel} onClick={(e) => e.stopPropagation()}> {children} </div>
     </div>,
     document.body
   )
@@ -24,7 +24,7 @@ const styles = {
     zIndex: 9999,
   },
   panel: {
-    background: "#fff",
+    background: "#d4d4d8",
     padding: "20px",
     borderRadius: "8px",
     minWidth: "300px",

@@ -30,25 +30,28 @@ export default function Places() {
   useEffect(() => {
     const fetchPlace = async () => {
       try {
-        const res = await api.get(`/place/${id}`)
-        setPlace(res.data)
+        const res = await api.get(`/places/${id}`)
+        console.log(res.data.data.place)
+        setPlace(res.data.data.place)
 
-        setTitle(res.data.title)
-        setDesc(res.data.description)
-        setLon(res.data.location.coordinates[0])
-        setLat(res.data.location.coordinates[1])
-        setSeason(res.data.season)
-        setDur(res.data.duration)
-        setDis(res.data.distance)
-        setTime(res.data.bestTime)
-        setRoute(res.data.route)
-        setImages(res.data.images)
-        setTips(res.data.tips)
-        setFeatures(res.data.features)
+        setTitle(res.data.data.place.title)
+        setDesc(res.data.data.place.description)
+        setLon(res.data.data.place.location.coordinates[0])
+        setLat(res.data.data.place.location.coordinates[1])
+        setSeason(res.data.data.place.season)
+        setDur(res.data.data.place.duration)
+        setDis(res.data.data.place.distance)
+        setTime(res.data.data.place.bestTime)
+        setRoute(res.data.data.place.route)
+        setImages(res.data.data.place.images)
+        setTips(res.data.data.place.tips)
+        setFeatures(res.data.data.place.features)
+
+        console.log(res.data.data.place)
 
         reset({
-          season: res.data.bestSeason,
-          difficulty: res.data.difficulty
+          season: res.data.data.place.bestSeason,
+          difficulty: res.data.data.place.difficulty
         })
       } catch (error) {
         const message = error.response?.data?.message
@@ -81,8 +84,7 @@ export default function Places() {
       ]
 
 
-      const res = await api.put('/place', {
-        id: place._id,
+      const res = await api.put(`/places/${id}`, {
         title: title,
         description: desc,
         images: finalImages,
@@ -101,8 +103,9 @@ export default function Places() {
         distance: dis,
       })
 
-      toast.success(res.data.message)
-      setPlace(res.data)
+      // toast.success(res.data.message)
+      console.log(id)
+      // setPlace(res.data)
     } catch (error) {
       const message = error.response?.data?.message
       console.log(message)
@@ -126,7 +129,7 @@ export default function Places() {
 
   async function deletePlace() {
     try {
-      const res = await api.delete(`/place/${place._id}`)
+      const res = await api.delete(`/place/${id}`)
       toast.success(res.data.message)
       navigate('/admin')
     } catch (error) {

@@ -68,7 +68,15 @@ export const getCurrentUser = async (userId) => {
   if (!user) {
     throw new ApiError(404, "User not found")
   }
-  return user
+  return {
+    user: {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      bookmarks: user.bookmarks,
+    }
+  }
 }
 
 export const addToBookmarks = async (userId, placeId) => {
