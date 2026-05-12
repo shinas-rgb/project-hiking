@@ -2,8 +2,6 @@ import { useEffect } from "react"
 import api from "../api/api"
 import { useState } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
-import Navbar from "../components/Navbar.jsx"
-import SearchBar from "../components/SearchBar"
 import Overlay from "../components/Overlay"
 import SliderBar from "../components/Slider"
 
@@ -25,6 +23,8 @@ export default function SearchPlaces() {
   let [filter, setFilter] = useState(false)
   const [searchParams] = useSearchParams();
   const navigate = useNavigate()
+
+  const [searchText, SetSearchText] = useState(searchParams.get("q") || "")
 
   useEffect(() => {
     const fetchSearch = async () => {
@@ -120,88 +120,35 @@ export default function SearchPlaces() {
   return (
     <div>
       <div className="w-full">
-        <Navbar />
-        <div className="mt-4">
-          <SearchBar />
+
+        {/* Back button */}
+        <div className="mx-6 my-6 flex">
+          <Link to="/">
+            <p className="absolute text-white text-2xl hover:cursor-pointer w-fit">←</p>
+          </Link>
+          <h1 className="text-center w-full text-xl">Search</h1>
         </div>
+
+        {/* Search Bar */}
+        <div className='flex justify-center max-sm:text-xs'>
+          <div className='bg-zinc-800 flex items-center border border-zinc-700 text-gray-300 py-2 px-3 rounded-2xl gap-1'>
+            <button type="submit">
+              <svg className='search-icon fill-zinc-600' xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"><path d="M480 272C480 317.9 465.1 360.3 440 394.7L566.6 521.4C579.1 533.9 579.1 554.2 566.6 566.7C554.1 579.2 533.8 579.2 521.3 566.7L394.7 440C360.3 465.1 317.9 480 272 480C157.1 480 64 386.9 64 272C64 157.1 157.1 64 272 64C386.9 64 480 157.1 480 272zM272 416C351.5 416 416 351.5 416 272C416 192.5 351.5 128 272 128C192.5 128 128 192.5 128 272C128 351.5 192.5 416 272 416z" /></svg>
+            </button>
+            <form onSubmit={(e) => {
+              e.preventDefault()
+              navigate(`/search?q=${searchText}`)
+            }}>
+              <input type="text" placeholder="Search for places" value={searchText} onChange={(e) => SetSearchText(e.target.value)}
+                className="w-fit text-base" />
+            </form>
+            <button type="button" onClick={() => SetSearchText("")}>
+              <p className="hover:cursor-pointer text-xs rounded-full px-1.5 bg-zinc-700 text-zinc-500">x</p>
+            </button>
+          </div >
+        </div>
+
         <div className="text-white  grid max-sm:text-xs">
-          {open && (
-            <div className="text-black">
-              <Overlay isOpen={open} onClose={() => setOpen(false)}>
-                <div className=" flex justify-center mb-4">
-                  <h2>Filter</h2>
-                </div>
-                <form>
-                  <div className="flex max-sm:flex-col justify-around gap-2 mb-4">
-                    <div className="text-center max-sm:flex max-sm:flex-col max-sm:items-center">
-                      <p>Difficulty</p>
-                      <fieldset onChange={handleChange}>
-                        <select name="difficulty" value={difficulty} onChange={(e) => setDifficulty(e.target.value)}
-                          className="border-2 p-2 max-sm:w-fit bg-gray-600 text-white border-black rounded-xl">
-                          <option value="">All difficulty</option>
-                          <option value="Easy">Easy</option>
-                          <option value="Moderate">Moderate</option>
-                          <option value="Hard">Hard</option>
-                        </select>
-                      </fieldset>
-                    </div>
-                    <div className="text-center max-sm:flex max-sm:flex-col max-sm:items-center">
-                      <p>Season</p>
-                      <fieldset onChange={handleChange}>
-                        <select name="bestSeason" value={season} onChange={(e) => setSeason(e.target.value)}
-                          className="border-2 max-sm:w-fit p-2 bg-gray-600 text-white border-black rounded-xl">
-                          <option value="">All Season</option>
-                          <option value="Winter">Winter</option>
-                          <option value="Summer">Summer</option>
-                          <option value="Monsoon">Monsoon</option>
-                          <option value="Autunm">Autunm</option>
-                        </select>
-                      </fieldset>
-                    </div>
-                    <div className="text-center max-sm:flex max-sm:flex-col max-sm:items-center">
-                      <p>District</p>
-                      <fieldset onChange={handleChange}>
-                        <select name="district" value={district} onChange={(e) => setDistrict(e.target.value)}
-                          className="border-2 max-sm:w-fit p-2 bg-gray-600 text-white border-black rounded-xl">
-                          <option value="">All districts</option>
-                          <option value="wayanad">Wayanad</option>
-                          <option value="theni">Theni</option>
-                          <option value="eranakulam">Eranakulam</option>
-                          <option value="idukki">Idukki</option>
-                          <option value="malappuram">Malappuram</option>
-                        </select>
-                      </fieldset>
-                    </div>
-                  </div>
-                </form>
-                <div>
-                  <form className="flex gap-2 items-center">
-                    <input type="checkbox" checked={checked} onChange={handleChecked} />
-                    <label>Nearby Places within(km)</label>
-                    <input type="number" min="1" className="w-14 bg-gray-400 py-1 px-2 rounded border" value={locLimit} onChange={(e) => handleLocationLimit(e)} />
-                  </form>
-                </div>
-                <div className="flex justify-around max-sm:flex-col max-sm:items-center max-sm:gap-4">
-                  <form onChange={handleDuration} className="w-44">
-                    <label>Duration (Hour)</label>
-                    <SliderBar
-                      min={1}
-                      max={50}
-                      value={duration}
-                      onChange={setDuration} />
-                  </form>
-                  <form onChange={handleDistance} className="w-44">
-                    <label>Distance (Km)</label>
-                    <SliderBar
-                      min={1}
-                      max={20}
-                      value={distance}
-                      onChange={setDistance} />
-                  </form>
-                </div>
-              </Overlay>
-            </div>
-          )}
           <div className="w-full">
             <div className="flex gap-28 content-center items-center justify-end mr-8 max-sm:mt-4">
               {filter && (
@@ -272,6 +219,83 @@ export default function SearchPlaces() {
             </div>
           ))}
         </div>
+        {open && (
+          <div className="text-black">
+            <Overlay isOpen={open} onClose={() => setOpen(false)}>
+              <div className=" flex justify-center mb-4">
+                <h2>Filter</h2>
+              </div>
+              <form>
+                <div className="flex max-sm:flex-col justify-around gap-2 mb-4">
+                  <div className="text-center max-sm:flex max-sm:flex-col max-sm:items-center">
+                    <p>Difficulty</p>
+                    <fieldset onChange={handleChange}>
+                      <select name="difficulty" value={difficulty} onChange={(e) => setDifficulty(e.target.value)}
+                        className="border-2 p-2 max-sm:w-fit bg-gray-600 text-white border-black rounded-xl">
+                        <option value="">All difficulty</option>
+                        <option value="Easy">Easy</option>
+                        <option value="Moderate">Moderate</option>
+                        <option value="Hard">Hard</option>
+                      </select>
+                    </fieldset>
+                  </div>
+                  <div className="text-center max-sm:flex max-sm:flex-col max-sm:items-center">
+                    <p>Season</p>
+                    <fieldset onChange={handleChange}>
+                      <select name="bestSeason" value={season} onChange={(e) => setSeason(e.target.value)}
+                        className="border-2 max-sm:w-fit p-2 bg-gray-600 text-white border-black rounded-xl">
+                        <option value="">All Season</option>
+                        <option value="Winter">Winter</option>
+                        <option value="Summer">Summer</option>
+                        <option value="Monsoon">Monsoon</option>
+                        <option value="Autunm">Autunm</option>
+                      </select>
+                    </fieldset>
+                  </div>
+                  <div className="text-center max-sm:flex max-sm:flex-col max-sm:items-center">
+                    <p>District</p>
+                    <fieldset onChange={handleChange}>
+                      <select name="district" value={district} onChange={(e) => setDistrict(e.target.value)}
+                        className="border-2 max-sm:w-fit p-2 bg-gray-600 text-white border-black rounded-xl">
+                        <option value="">All districts</option>
+                        <option value="wayanad">Wayanad</option>
+                        <option value="theni">Theni</option>
+                        <option value="eranakulam">Eranakulam</option>
+                        <option value="idukki">Idukki</option>
+                        <option value="malappuram">Malappuram</option>
+                      </select>
+                    </fieldset>
+                  </div>
+                </div>
+              </form>
+              <div>
+                <form className="flex gap-2 items-center">
+                  <input type="checkbox" checked={checked} onChange={handleChecked} />
+                  <label>Nearby Places within(km)</label>
+                  <input type="number" min="1" className="w-14 bg-gray-400 py-1 px-2 rounded border" value={locLimit} onChange={(e) => handleLocationLimit(e)} />
+                </form>
+              </div>
+              <div className="flex justify-around max-sm:flex-col max-sm:items-center max-sm:gap-4">
+                <form onChange={handleDuration} className="w-44">
+                  <label>Duration (Hour)</label>
+                  <SliderBar
+                    min={1}
+                    max={50}
+                    value={duration}
+                    onChange={setDuration} />
+                </form>
+                <form onChange={handleDistance} className="w-44">
+                  <label>Distance (Km)</label>
+                  <SliderBar
+                    min={1}
+                    max={20}
+                    value={distance}
+                    onChange={setDistance} />
+                </form>
+              </div>
+            </Overlay>
+          </div>
+        )}
       </div >
     </div >
   )

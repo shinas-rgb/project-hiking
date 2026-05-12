@@ -82,7 +82,7 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden fixed inset-0 z-50  p-6 bg-black/95">
+          <div className="lg:hidden fixed inset-0 z-50  p-6 bg-black/90">
             <div className="flex items-center justify-between">
               <a href="#" className="-m-1.5 p-1.5">
                 <h1 className="text-xl"></h1>
