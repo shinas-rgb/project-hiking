@@ -8,7 +8,7 @@ export default function Navbar() {
 
   return (
     <div>
-      <header className="absolute inset-x-0 top-0 z-50">
+      <header >
         <nav
           aria-label="Global"
           className="flex items-center justify-between p-6 lg:px-8"
@@ -25,29 +25,31 @@ export default function Navbar() {
           </div>
 
           {/* Mobile menu button */}
-          <div className="flex lg:hidden">
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(true)}
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-200"
-            >
-              <span className="sr-only">Open main menu</span>
-
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                className="size-6"
+          {!mobileMenuOpen && (
+            <div className="flex lg:hidden">
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen(true)}
+                className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-200"
               >
-                <path
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </button>
-          </div>
+                <span className="sr-only">Open main menu</span>
+
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  className="size-6"
+                >
+                  <path
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+          )}
 
           {/* Desktop menu */}
           <div className="hidden lg:flex lg:gap-x-12">
@@ -66,28 +68,30 @@ export default function Navbar() {
           </div>
 
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="/auth" className="text-sm font-semibold text-white">
-              Log in →
-            </a>
+            {!user ? (
+              <a href="/auth" className="text-sm font-semibold text-white">
+                Log in →
+              </a>
+            ) : (
+              <a href="/profile" className="text-sm font-semibold text-white">
+                Profile
+              </a>
+            )}
           </div>
         </nav>
 
         {/* Mobile menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden fixed inset-0 z-50  p-6">
+          <div className="lg:hidden fixed inset-0 z-50  p-6 bg-black/95">
             <div className="flex items-center justify-between">
               <a href="#" className="-m-1.5 p-1.5">
-                <img
-                  src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500"
-                  alt=""
-                  className="h-8 w-auto"
-                />
+                <h1 className="text-xl"></h1>
               </a>
 
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(false)}
-                className="-m-2.5 rounded-md p-2.5 text-gray-200"
+                className="-m-2.5 rounded-md p-2.5 text-gray-200 text-2xl font-bold"
               >
                 ✕
               </button>
@@ -121,6 +125,21 @@ export default function Navbar() {
               >
                 Contact
               </a>
+              {!user ? (
+                <a
+                  href="/auth"
+                  className="block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-white/5"
+                >
+                  Login
+                </a>
+              ) : (
+                <a
+                  href="/profile"
+                  className="block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-white/5"
+                >
+                  Profile
+                </a>
+              )}
             </div>
           </div>
         )}

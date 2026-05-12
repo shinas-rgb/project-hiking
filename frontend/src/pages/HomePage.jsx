@@ -6,17 +6,21 @@ import img4 from "../assets/pexels-jen-madhi-1597353-12121705.jpg"
 import img5 from "../assets/pexels-k-s-aravinda-kashyap-86628820-31580155.jpg"
 import img0 from "../assets/pexels-tom-fly-2150802027-31410276.jpg"
 import { Link } from "react-router-dom";
+import { checkUser } from '../utils/auth.js'
 
 export default function HomePage() {
+  const user = checkUser()
   return (
     <div
       className='page mb-8 max-w-full'>
-      <Navbar />
+      <div className="absolute inset-x-0 top-0 z-50">
+        <Navbar />
+      </div>
       {/* Hero section */}
       <div className="relative z-10 isolate px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-52">
+        <div className="mx-auto max-w-2xl py-42 sm:py-48 lg:py-52">
           <div className="text-center">
-            <h1 className="text-5xl font-semibold text-white sm:text-6xl">
+            <h1 className="text-3xl font-semibold text-white sm:text-6xl">
               Find and explore hidden and adventerous trekking spots
             </h1>
 
@@ -25,14 +29,16 @@ export default function HomePage() {
             </p>
 
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <Link to="/auth">
-                <button type=""
-                  className="border font-semibold border-zinc-700  bg-zinc-900 px-3.5 py-2.5 rounded-md text-white
-                hover:border-zinc-600 hover:bg-zinc-800 hover:cursor-pointer">
-                  Get Started
-                </button>
-              </Link>
-              <a href="#" className="text-sm font-semibold text-white">
+              {!user && (
+                <Link to="/auth">
+                  <button type=""
+                    className="border font-semibold border-zinc-700  bg-zinc-900 px-3.5 py-2.5 rounded-md text-white
+                    hover:border-zinc-600 hover:bg-zinc-800 hover:cursor-pointer">
+                    Get Started
+                  </button>
+                </Link>
+              )}
+              <a href="/search" className="text-sm  font-semibold text-white">
                 Find Places →
               </a>
             </div>
@@ -49,21 +55,21 @@ export default function HomePage() {
         >
         </div>
         <div className="absolute inset-0 bg-black/70" />
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-10 max-sm:py-10 lg:px-8">
           <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
 
             {/* LEFT SIDE */}
             <div className="space-y-8">
-              <h1 className="text-5xl font-bold tracking-tight text-white sm:text-5xl">
+              <h1 className="text-2xl font-bold tracking-tight text-white sm:text-5xl">
                 “ In every walk with nature, one receives far more than they seek ”
               </h1>
-              <h1 className="text-5xl font-bold justify-self-end mr-18 tracking-tight text-white sm:text-3xl">
+              <h1 className="text-xl font-bold justify-self-end sm:mr-18  tracking-tight text-white sm:text-3xl">
                 — John Muir
               </h1>
             </div>
 
             {/* RIGHT SIDE IMAGE TILES */}
-            <div className="grid grid-cols-3 gap-8">
+            <div className="grid grid-cols-3 sm:gap-8 gap-4">
 
               {/* COLUMN 1 */}
               <div className="space-y-6 pt-32">

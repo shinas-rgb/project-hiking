@@ -36,8 +36,6 @@ export default function SearchPlaces() {
         })
         setPlaces(res.data.data.places)
         setPages(res.data.data.totalPages)
-        if (!searchParams.has("trending"))
-          setFilter(true)
       } catch (error) {
         const message = error.response?.data?.message || "Something went wrong"
         console.log(message)

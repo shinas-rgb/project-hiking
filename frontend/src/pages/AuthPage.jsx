@@ -37,13 +37,13 @@ export default function AuthPage() {
     }
   }
   return (
-    <div className="h-screen mx-20 border-l border-r border-zinc-700">
-      <h1 className="absolute top-6 left-28 text-2xl font-extrabold">Trek wiki</h1>
-      <div className="grid grid-cols-2  h-screen bg-zinc-800">
+    <div className="h-screen sm:mx-20 border-l border-r border-zinc-700">
+      <h1 className="absolute sm:top-6 top-3 max-sm:hidden left-3 sm:left-28 text-2xl font-extrabold">Trek wiki</h1>
+      <div className="grid sm:grid-cols-2  h-screen sm:bg-zinc-800">
         <img className="mx-4 w-full h-full object-cover overflow-hidden object-center bg-cover rounded-xl" src={img} alt="" />
-        <div className="px-28 flex flex-col justify-center h-screen">
-          <div className="mb-8">
-            <h1 className="text-5xl leading-14 mb-2">
+        <div className="sm:px-28 px-14 flex flex-col justify-center h-screen max-sm:bg-zinc-800">
+          <div className="sm:mb-8 mb-4">
+            <h1 className="sm:text-5xl text-3xl sm:leading-14 sm:mb-2 mb-4">
               {mode === "login" ? (
                 'Login to your account '
               ) : (
@@ -106,7 +106,7 @@ export default function AuthPage() {
               </div>
             )}
             <button
-              className="bg-zinc-300 text-zinc-700 py-2 rounded-md
+              className="bg-zinc-300 mt-2 text-zinc-700 py-2 rounded-md
                 hover:cursor-pointer hover:bg-zinc-400 hover:text-zinc-800"
               type="submit">
               {mode === 'login' ? (
