@@ -11,17 +11,17 @@ export default function Navbar() {
       <header >
         <nav
           aria-label="Global"
-          className="flex items-center justify-between p-6 lg:px-8"
+          className="flex items-center justify-between p-4 lg:px-8"
         >
           <div className="flex lg:flex-1">
-            <a href="#" className="-m-1.5 p-1.5">
+            <div className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
               <Link to="/">
                 <h3
-                  className="text-white text-2xl font-bold"
+                  className="text-white sm:text-2xl text-2xl font-bold"
                 >Trek Wiki</h3>
               </Link>
-            </a>
+            </div>
           </div>
 
           {/* Mobile menu button */}
@@ -39,7 +39,7 @@ export default function Navbar() {
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="1.5"
-                  className="size-6"
+                  className="size-8"
                 >
                   <path
                     d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
@@ -53,7 +53,7 @@ export default function Navbar() {
 
           {/* Desktop menu */}
           <div className="hidden lg:flex lg:gap-x-12">
-            <a href="#" className="text-sm font-semibold text-white">
+            <a href="/search?trending=true" className="text-sm font-semibold text-white">
               Trending
             </a>
             <a href="#" className="text-sm font-semibold text-white">
@@ -99,7 +99,7 @@ export default function Navbar() {
 
             <div className="mt-6 space-y-4">
               <a
-                href="#"
+                href="/search?trending=true"
                 className="block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-white/5"
               >
                 Trending

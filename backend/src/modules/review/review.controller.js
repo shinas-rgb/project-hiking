@@ -15,3 +15,10 @@ export const getReviewsOfPlaceController = asyncHandler(async (req, res) => {
     new ApiResponse(200, result, "Reviews fetched")
   )
 })
+
+export const getReviewsOfUserController = asyncHandler(async (req, res) => {
+  const result = await reviewService.getReviewsOfUser(req.user.id)
+  res.status(200).json(
+    new ApiResponse(200, result, "Reviews fetched")
+  )
+})

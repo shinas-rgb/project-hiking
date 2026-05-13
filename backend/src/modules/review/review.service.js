@@ -72,3 +72,12 @@ export const getReviewsOfPlace = async (placeId) => {
   const reviews = await Review.find({ placeId })
   return reviews
 }
+
+export const getReviewsOfUser = async (userId) => {
+  if (!userId) {
+    throw new ApiError(400, "User not authenticated")
+  }
+
+  const reviews = await Review.find({ userId })
+  return reviews
+}

@@ -52,7 +52,7 @@ export default function AuthPage() {
     <div className="h-screen sm:mx-20 border-l border-r border-zinc-700">
       <h1 className="absolute sm:top-6 top-3 max-sm:hidden left-3 sm:left-28 text-2xl font-extrabold">Trek wiki</h1>
       <div className="grid sm:grid-cols-2 grid-cols-1 h-screen sm:bg-zinc-800">
-        <img className="mx-4 w-full h-full max-sm:hidden object-cover overflow-hidden object-center bg-cover rounded-xl" src={img} alt="" />
+        <img className=" w-full h-full max-sm:hidden object-cover overflow-hidden object-center bg-cover rounded-r-2xl" src={img} alt="" />
         <div className="sm:px-28 px-8 flex flex-col justify-center h-screen max-sm:bg-zinc-800">
           <div className="sm:mb-8 mb-4">
             <h1 className="sm:text-5xl text-4xl sm:leading-14 sm:mb-2 mb-2">
