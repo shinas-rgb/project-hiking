@@ -59,10 +59,10 @@ export default function Navbar() {
             <a href="#" className="text-sm font-semibold text-white">
               Help
             </a>
-            <a href="#" className="text-sm font-semibold text-white">
+            <a href="/contact" className="text-sm font-semibold text-white">
               Contact
             </a>
-            <a href="#" className="text-sm font-semibold text-white">
+            <a href="https://www.github.com/shinas-rgb" className="text-sm font-semibold text-white">
               GitHub
             </a>
           </div>
@@ -112,19 +112,16 @@ export default function Navbar() {
                 Features
               </a>
 
-              <a
-                href="#"
-                className="block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-white/5"
-              >
-                Marketplace
-              </a>
-
-              <a
-                href="#"
-                className="block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-white/5"
-              >
+              <a href="/contact"
+                className="block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-white/5" >
                 Contact
               </a>
+
+              <a href="https://www.github.com/shinas-rgb"
+                className="block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-white/5" >
+                GitHub
+              </a>
+
               {!user ? (
                 <a
                   href="/auth"

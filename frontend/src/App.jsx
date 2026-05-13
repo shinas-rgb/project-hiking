@@ -15,6 +15,7 @@ import Admin from './pages/admin/Admin.jsx'
 import Users from './pages/admin/Users.jsx'
 import Places from './pages/admin/Places.jsx'
 import TestPage from './pages/TestPage.jsx'
+import ContactPage from './pages/ContactPage.jsx'
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
       <Route path='/auth' element={<AuthPage />} />
       <Route path='/search' element={<SearchPage />} />
       <Route path='/test' element={<TestPage />} />
+      <Route path='/contact' element={<ContactPage />} />
     </Routes>
   )
 }
