@@ -56,8 +56,8 @@ export default function Navbar() {
             <a href="/search?trending=true" className="text-sm font-semibold text-white">
               Trending
             </a>
-            <a href="#" className="text-sm font-semibold text-white">
-              Help
+            <a href="/profile/account" className="text-sm font-semibold text-white">
+              Account
             </a>
             <a href="/contact" className="text-sm font-semibold text-white">
               Contact
@@ -106,10 +106,10 @@ export default function Navbar() {
               </a>
 
               <a
-                href="#"
+                href="/profile/account"
                 className="block rounded-lg px-3 py-2 text-base font-semibold text-white hover:bg-white/5"
               >
-                Features
+                Account
               </a>
 
               <a href="/contact"
