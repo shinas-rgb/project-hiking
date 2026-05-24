@@ -26,7 +26,6 @@ export const getPlaceByIdController = asyncHandler(async (req, res, next) => {
 })
 
 export const updatePlaceController = async (req, res, next) => {
-  console.log(req.user.id)
   try {
     const result = await placeService.updatePlace(req.body, req.prams.id, req.user.id)
     res.status(200).json(
