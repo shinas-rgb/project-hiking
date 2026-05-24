@@ -46,3 +46,13 @@ export const deletePlaceController = async (req, res, next) => {
     next(error)
   }
 }
+
+export const getPlacesOfUserController = async (req, res, next) => {
+  try {
+    const userId = req.user.id
+    const result = await placeService.getPlacesOfUser(userId)
+    res.status(200).json({ data: result, message: "Places fetched" })
+  } catch (error) {
+    next(error)
+  }
+}

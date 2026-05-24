@@ -7,7 +7,6 @@ import Place from "../place/place.model.js"
 
 export const createUser = async (data) => {
   const { name, email, password } = data
-  console.log(data)
   if (!name || !email || !password) {
     throw new ApiError(400, "All fields are required")
   }
@@ -24,7 +23,6 @@ export const createUser = async (data) => {
 }
 
 export const loginUser = async (data) => {
-  console.log(data.password)
   const { email, password } = data
 
   if (!email || !password) {

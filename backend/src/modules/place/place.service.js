@@ -10,6 +10,7 @@ export const getAllPlaces = async (query, userId) => {
   const filter = {}
   const sort = {}
 
+
   if (query.q && query.q.trim().length > 2) filter.title = {
     $regex: query.q.trim(),
     $options: "i"
@@ -162,7 +163,6 @@ export const getPlaceById = async (placeID) => {
 }
 
 export const updatePlace = async (data, placeId, userId) => {
-  console.log(data, placeId, userId)
   if (!placeId) {
     throw new ApiError(400, "ID of place is required")
   }
@@ -265,4 +265,12 @@ export const deletePlace = async (placeId, userId) => {
   // }
 
   return deletedPlace
+}
+
+export const getPlacesOfUser = async (userId) => {
+  if (!userId) {
+    throw new ApiError(401, "User not authenticated")
+  }
+  const places = await Place.find({ createdBy: userId })
+  return places
 }
