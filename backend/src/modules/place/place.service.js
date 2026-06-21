@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 import Place from "./place.model.js"
 import ApiError from "../../utils/ApiError.js"
 import User from "../user/user.model.js"
+import { uploadImage } from "../images/upload.service.js"
 
 export const getAllPlaces = async (query, userId) => {
   const page = Number(query.page) || 1
@@ -89,14 +90,24 @@ export const createPlace = async (data, userId) => {
   if (!data.title) {
     throw new ApiError(400, "Title is required")
   }
-  if (!data.location || !data.location.coordinates) {
-    throw new ApiError(400, "valid location is required")
-  }
-  if (data.location.coordinates.length !== 2) {
-    throw new ApiError(400, "Coordinates must be [lng, lat]")
+
+  if (!data.description) {
+    throw new ApiError(400, "Description is required")
   }
 
-  const [lng, lat] = data.location.coordinates
+  if (data.lon == null || data.lat == null ||
+    data.lon === "" || data.lat === "") {
+    throw new ApiError(400, "Coordinates are required")
+  }
+
+  const lng = Number(data.lon)
+  const lat = Number(data.lat)
+
+  if (!Number.isFinite(lng) || !Number.isFinite(lat)) {
+    throw new ApiError(
+      400, "Coordinates must be valid numbers"
+    );
+  }
 
   if (lng > 180 || lng < -180 || lat > 90 || lat < -90) {
     throw new ApiError(400, "Invalid coordinate range")
@@ -111,15 +122,64 @@ export const createPlace = async (data, userId) => {
   if (!Array.isArray(data.images) || data.images.length === 0) {
     throw new ApiError(400, "Atleast one image is required")
   }
-  if (data.duration == null) {
+  if (!data.duration) {
     throw new ApiError(400, "Duration is required")
   }
-  if (data.distance == null) {
+  if (!data.distance) {
     throw new ApiError(400, "Distance is required")
   }
 
+  const duration = Number(data.duration)
+  const distance = Number(data.distance)
+
+  if (!Number.isFinite(duration)) {
+    throw new ApiError(
+      400, "Duration must be a valid number"
+    );
+  }
+
+  if (!Number.isFinite(distance)) {
+    throw new ApiError(
+      400, "Distance must be a valid number"
+    );
+  }
+
+  const difficulty = JSON.parse(data.difficulty || "[]");
+  const bestSeason = JSON.parse(data.bestSeason || "[]");
+  const tips = JSON.parse(data.tips || "[]");
+  const features = JSON.parse(data.features || "[]");
+
+  if (bestSeason.length < 1) {
+    throw new ApiError(
+      400, "Select atleast one season"
+    );
+  }
+
+  if (difficulty.length < 1) {
+    throw new ApiError(
+      400, "Select atleast one difficulty"
+    );
+  }
+
+  const uploadedImages = await uploadImage(data.images);
+
   const placeData = {
-    ...data,
+    title: data.title,
+    description: data.description,
+    images: uploadedImages,
+    location: {
+      type: "Point",
+      coordinates: [lng, lat]
+    },
+    difficulty: difficulty,
+    bestSeason: bestSeason,
+    season: data.season,
+    bestTime: data.time,
+    route: data.route,
+    tips: tips,
+    features: features,
+    duration: duration,
+    distance: distance,
     createdBy: userId
   }
   const newPlace = await Place.create(placeData)
