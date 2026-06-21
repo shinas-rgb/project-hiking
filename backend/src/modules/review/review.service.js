@@ -5,6 +5,7 @@ import Review from "./review.model.js"
 import mongoose from "mongoose"
 
 export const createReview = async (data, userId, placeId) => {
+  console.log(data)
   if (!userId) {
     throw new ApiError(400, "User not authenticated")
   }
@@ -50,7 +51,7 @@ export const createReview = async (data, userId, placeId) => {
 
 
   place.totalRating = place.totalRating ? place.totalRating + 1 : 1
-  place.rating = (place.rating + rating) / (place.totalRating)
+  place.rating = ((place.rating * (place.totalRating - 1)) + rating) / (place.totalRating)
 
   await place.save()
 
@@ -81,3 +82,42 @@ export const getReviewsOfUser = async (userId) => {
   const reviews = await Review.find({ userId })
   return reviews
 }
+
+export const deleteReview = async (userId, placeId) => {
+  if (!userId) {
+    throw new ApiError(400, "User not authenticated")
+  }
+
+  if (!placeId) {
+    throw new ApiError(400, "Place ID required")
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(placeId)) {
+    throw new ApiError(400, "Invalid place ID")
+  }
+
+  const place = await Place.findById(placeId)
+  if (!place) {
+    throw new ApiError(404, "Place not found")
+  }
+
+  const review = await Review.findOneAndDelete({
+    placeId,
+    userId
+  })
+
+  if (!review) {
+    throw new ApiError(
+      404,
+      "Review not found or you don't have permission to delete it"
+    )
+  }
+
+  place.totalRating = place.totalRating - 1
+  place.rating = ((place.rating * (place.totalRating + 1)) - review.rating) / (place.totalRating)
+
+  await place.save()
+
+  return review
+}
+

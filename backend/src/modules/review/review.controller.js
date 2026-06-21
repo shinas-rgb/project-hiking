@@ -22,3 +22,11 @@ export const getReviewsOfUserController = asyncHandler(async (req, res) => {
     new ApiResponse(200, result, "Reviews fetched")
   )
 })
+
+export const deleteReviewController = asyncHandler(async (req, res) => {
+  const placeId = req.params.id
+  const result = await reviewService.deleteReview(req.user.id, placeId)
+  res.status(200).json(
+    new ApiResponse(200, result, "Review deleted")
+  )
+})
