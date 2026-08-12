@@ -1,6 +1,7 @@
 import express from 'express'
 import { protect } from "../../middleware/authMiddleware.js"
-import { addToBookmarksController, createUserController, getCurrentUserController, loginUserController, removeFromBookmarksController } from './user.controller.js'
+import { addToBookmarksController, createUserController, updateUserController, getCurrentUserController, loginUserController, removeFromBookmarksController } from './user.controller.js'
+import upload from '../../middleware/multer.js'
 
 const router = express.Router()
 
@@ -9,5 +10,6 @@ router.post('/login', loginUserController)
 router.get('/', protect, getCurrentUserController)
 router.post('/bookmarks/add/:id', protect, addToBookmarksController)
 router.post('/bookmarks/remove/:id', protect, removeFromBookmarksController)
+router.put('/', protect, upload.single("image"), updateUserController)
 
 export default router

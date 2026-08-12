@@ -4,6 +4,7 @@ import User from "./user.model.js"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import Place from "../place/place.model.js"
+import { uploadImage } from "../images/upload.service.js"
 
 export const createUser = async (data) => {
   const { name, email, password } = data
@@ -73,6 +74,8 @@ export const getCurrentUser = async (userId) => {
       email: user.email,
       role: user.role,
       bookmarks: user.bookmarks,
+      image: user.image || {url: "https://res.cloudinary.com/dyqumsdla/image/upload/v1786527430/hike_uploads/uo37wvuqsquyasoh6m0w.jpg" },
+      bio: user.bio,
     }
   }
 }
@@ -133,4 +136,40 @@ export const removeFromBookmarks = async (userId, placeId) => {
   }, { new: true })
 
   return user
+}
+
+export const updateUser = async (userId, data) => {
+  if (!userId) {
+    throw new ApiError(400, "Not authorized")
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    throw new ApiError(400, "Invalid user ID")
+  }
+
+  if(!data.name) {
+    throw new ApiError(400, "Name required")
+  }
+
+  if(!data.bio) {
+    throw new ApiError(400, "Bio required")
+  }
+
+
+  const user = await User.findById(userId)
+  user.name = data.name;
+  user.bio = data.bio;
+
+  if (data.image) {
+    const uploadedImage = await uploadImage(data.image);
+    user.image = uploadedImage;
+  }
+
+  if(!data.pfp) {
+    user.image = { url: "https://res.cloudinary.com/dyqumsdla/image/upload/v1786527430/hike_uploads/uo37wvuqsquyasoh6m0w.jpg", }
+  }
+
+  await user.save()
+
+  return user;
 }

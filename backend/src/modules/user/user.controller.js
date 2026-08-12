@@ -36,3 +36,10 @@ export const removeFromBookmarksController = asyncHandler(async (req, res) => {
     new ApiResponse(201, result, "Removed from Bookmarks")
   )
 })
+
+export const updateUserController = asyncHandler(async (req, res) => {
+  const result = await UserService.updateUser(req.user.id, { ...req.body, image: req.file })
+  res.status(201).json(
+    new ApiResponse(201, result, "Updated user")
+  )
+})
