@@ -25,6 +25,11 @@ export const uploadImage = async (files) => {
     });
   };
 
+  if(files.length == undefined) {
+    const uploadedImage = await uploadSingle(files.buffer)
+    return uploadedImage
+  }
+
   const uploadedImages = await Promise.all(
     files.map(file => uploadSingle(file.buffer))
   );
