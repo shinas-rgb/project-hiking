@@ -43,3 +43,31 @@ export const updateUserController = asyncHandler(async (req, res) => {
     new ApiResponse(201, result, "Updated user")
   )
 })
+
+export const getSingleUserController = asyncHandler(async (req, res) => {
+  const result = await UserService.getSingleUser(req.params.id)
+  res.status(200).json(
+    new ApiResponse(200, result, "User fetched")
+  )
+})
+
+export const getUserProfileController = asyncHandler(async (req, res) => {
+  const result = await UserService.getUserProfile(req.params.id)
+  res.status(200).json(
+    new ApiResponse(200, result, "User fetched")
+  )
+})
+
+export const followuserController = asyncHandler(async (req, res) => {
+  const result = await UserService.followUser(req.user.id, req.params.id)
+  res.status(200).json(
+    new ApiResponse(200, result, "User followed")
+  )
+})
+
+export const unfollowuserController = asyncHandler(async (req, res) => {
+  const result = await UserService.unfollowUser(req.user.id, req.params.id)
+  res.status(200).json(
+    new ApiResponse(200, result, "User unfollowed")
+  )
+})

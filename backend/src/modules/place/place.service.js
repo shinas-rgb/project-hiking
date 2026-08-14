@@ -3,6 +3,9 @@ import Place from "./place.model.js"
 import ApiError from "../../utils/ApiError.js"
 import User from "../user/user.model.js"
 import { uploadImage } from "../images/upload.service.js"
+import Review from "../review/review.model.js"
+import { getReviewsOfPlace } from "../review/review.service.js"
+import { getSingleUser } from "../user/user.service.js"
 
 export const getAllPlaces = async (query, userId) => {
   const page = Number(query.page) || 1
@@ -201,6 +204,10 @@ export const getPlaceById = async (placeID) => {
   if (!place) {
     throw new ApiError(404, "Place not found")
   }
+
+  const reviews = await getReviewsOfPlace(placeID)
+  const createdUser = await getSingleUser(place.createdBy)
+
   return {
     place: {
       _id: place._id,
@@ -217,8 +224,11 @@ export const getPlaceById = async (placeID) => {
       tips: place.tips,
       duration: place.duration,
       distance: place.distance,
-      rating: place.rating
-    }
+      rating: place.rating,
+      createdBy: place.createdBy,
+    },
+    reviews,
+    createdUser
   }
 }
 

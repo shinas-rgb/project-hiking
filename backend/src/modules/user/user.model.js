@@ -31,6 +31,43 @@ const userSchema = new mongoose.Schema(
       default: "user"
     },
     bookmarks: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Place' }],
+    followers: [
+      // {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true}
+      {
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+        name: {
+          type: String,
+        },
+        image: {
+          type: {
+            url: String,
+            publicId: String,
+          },
+          default: {
+            url: "https://res.cloudinary.com/dyqumsdla/image/upload/v1786527430/hike_uploads/uo37wvuqsquyasoh6m0w.jpg",
+            publicId: "default_img",
+          }
+        }
+      }
+    ],
+    followings: [
+      {
+        _id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+        name: {
+          type: String,
+        },
+        image: {
+          type: {
+            url: String,
+            publicId: String,
+          },
+          default: {
+            url: "https://res.cloudinary.com/dyqumsdla/image/upload/v1786527430/hike_uploads/uo37wvuqsquyasoh6m0w.jpg",
+            publicId: "default_img",
+          }
+        }
+      }
+    ],
   }
 )
 
