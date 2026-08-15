@@ -75,6 +75,7 @@ export const getAllPlaces = async (query, userId) => {
   }
 
   const places = await Place.find(filter)
+    .select('_id title images rating')
     .sort(sort)
     .skip((page - 1) * limit)
     .limit(limit)
