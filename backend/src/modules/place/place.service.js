@@ -201,13 +201,13 @@ export const getPlaceById = async (placeID) => {
   }
 
   const place = await Place.findById(placeID)
+  .populate("createdBy", "_id name image")
 
   if (!place) {
     throw new ApiError(404, "Place not found")
   }
 
   const reviews = await getReviewsOfPlace(placeID)
-  const createdUser = await getSingleUser(place.createdBy)
 
   return {
     place: {
@@ -229,7 +229,6 @@ export const getPlaceById = async (placeID) => {
       createdBy: place.createdBy,
     },
     reviews,
-    createdUser
   }
 }
 
