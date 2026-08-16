@@ -31,3 +31,17 @@ export const getPostsOfUserController = asyncHandler(async (req, res) => {
     new ApiResponse(200, result, "Posts fetched")
   )
 })
+
+export const likePostController = asyncHandler(async (req, res) => {
+  const result = await postService.likePost(req.user.id, req.params.id)
+  res.status(201).json(
+    new ApiResponse(201, result, "Liked post")
+  )
+})
+
+export const unLikePostController = asyncHandler(async (req, res) => {
+  const result = await postService.unLikePost(req.user.id, req.params.id)
+  res.status(201).json(
+    new ApiResponse(201, result, "Unliked post")
+  )
+})

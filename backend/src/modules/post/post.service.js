@@ -142,3 +142,51 @@ export const getPostsOfUser = async (userId, limit, cursor) => {
     nextCursor
   }
 }
+
+export const likePost = async (userId, postId) => {
+  if (!userId) {
+    throw new ApiError(400, "User not authenticated")
+  }
+
+  if (!postId) {
+    throw new ApiError(400, "Post ID required")
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(postId)) {
+    throw new ApiError(400, "Invalid Post ID")
+  }
+
+  const post = await Post.findByIdAndUpdate(postId, {
+    $addToSet: { likedBy: userId },
+  }, { new: true })
+
+  if(!post) {
+    throw new ApiError(404, "Post not found")
+  }
+
+  return post
+}
+
+export const unLikePost = async (userId, postId) => {
+  if (!userId) {
+    throw new ApiError(400, "User not authenticated")
+  }
+
+  if (!postId) {
+    throw new ApiError(400, "Post ID required")
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(postId)) {
+    throw new ApiError(400, "Invalid Post ID")
+  }
+
+  const post = await Post.findByIdAndUpdate(postId, {
+    $pull: { likedBy: userId }
+  }, { new: true })
+
+  if(!post) {
+    throw new ApiError(404, "Post not found")
+  }
+
+  return post
+}
