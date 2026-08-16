@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema(
           },
           default: {
             url: "https://res.cloudinary.com/dyqumsdla/image/upload/v1786527430/hike_uploads/uo37wvuqsquyasoh6m0w.jpg",
-            publicId: "default_img",
+            public_id: "default_img",
           }
         }
       }
@@ -63,7 +63,7 @@ const userSchema = new mongoose.Schema(
           },
           default: {
             url: "https://res.cloudinary.com/dyqumsdla/image/upload/v1786527430/hike_uploads/uo37wvuqsquyasoh6m0w.jpg",
-            publicId: "default_img",
+            public_id: "default_img",
           }
         }
       }
