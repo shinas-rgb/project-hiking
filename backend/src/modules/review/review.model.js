@@ -10,8 +10,6 @@ const reviewSchema = new mongoose.Schema(
     },
     rating: Number,
     review: String,
-    userName: String,
-    placeName: String,
   },
   { timestamps: true }
 )

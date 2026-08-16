@@ -70,12 +70,9 @@ export const getReviewsOfPlace = async (placeId) => {
     throw new ApiError(400, "Invalid place ID")
   }
 
-  const reviews = (await Review.find({ placeId })).map((r) => ({
-    rating: r.rating,
-    review: r.review,
-    userId: r.userId,
-    userName: r.userName,
-  }))
+  const reviews = await Review.find({ placeId })
+  .populate("userId", "_id name image")
+  .populate("placeId", "_id title")
 
   return reviews
 }
@@ -86,6 +83,8 @@ export const getReviewsOfUser = async (userId) => {
   }
 
   const reviews = await Review.find({ userId })
+  .populate("userId", "_id name image")
+  .populate("placeId", "_id title")
 
   return reviews
 }
