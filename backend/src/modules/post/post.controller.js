@@ -23,3 +23,11 @@ export const deletedPlaceController = asyncHandler(async (req, res) => {
     new ApiResponse(201, result, "Post deleted")
   )
 })
+
+export const getPostsOfUserController = asyncHandler(async (req, res) => {
+  const {userId, limit, cursor} = req.query
+  const result = await postService.getPostsOfUser(userId, Math.min((Number(limit)) || 20, 50), cursor)
+  res.status(200).json(
+    new ApiResponse(200, result, "Posts fetched")
+  )
+})

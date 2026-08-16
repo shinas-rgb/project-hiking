@@ -4,11 +4,6 @@ import Post from "./post.model.js"
 import { uploadImage } from "../images/upload.service.js"
 
 export const getAllPosts = async (limit, cursor) => {
-  console.log("Here...")
-  console.log("cursor: ")
-  console.log(cursor)
-  console.log("limit: ")
-  console.log(limit)
   const query = {}
 
   if(cursor) {
@@ -97,4 +92,53 @@ export const deletePost = async (userId, postId) => {
   }
 
   return deletedPost
+}
+
+export const getPostsOfUser = async (userId, limit, cursor) => {
+  const query = {}
+
+  if (!userId) {
+    throw new ApiError(400, "User not authenticated")
+  }
+
+  if(cursor) {
+    const cursorPost = await Post.findById(cursor)
+
+    if(!cursorPost) {
+      throw new ApiError(400, "Invalid cursor error")
+    }
+
+    query.$or = [
+      { createdAt: { $lt: cursorPost.createdAt } },
+      {
+        createdAt: cursorPost.createdAt,
+        _id: { $lt: cursorPost._id }
+      }
+    ]
+
+  }
+
+  query.author = userId
+
+  const posts = await Post.find(query)
+  .populate("place", "_id title")
+  .sort({createdAt: -1, _id: -1})
+  .limit(limit + 1)
+  .lean()
+
+  const hasMore = posts.length > limit
+
+  if(hasMore) {
+    posts.pop()
+  }
+
+  const nextCursor = hasMore
+  ? posts[posts.length - 1]._id
+  : null
+
+  return {
+    posts,
+    hasMore,
+    nextCursor
+  }
 }
