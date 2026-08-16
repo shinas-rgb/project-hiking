@@ -55,3 +55,12 @@ export const getPlacesOfUserController = async (req, res, next) => {
     next(error)
   }
 }
+
+export const getPlacesNameController = async (req, res, next) => {
+  try {
+    const result = await placeService.getPlacesName()
+    res.status(200).json({ data: result, message: "Places fetched" })
+  } catch (error) {
+    next(error)
+  }
+}

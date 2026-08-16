@@ -345,3 +345,9 @@ export const getPlacesOfUser = async (userId) => {
   const places = await Place.find({ createdBy: userId })
   return places
 }
+
+export const getPlacesName = async () => {
+  const places = await Place.find()
+  .select("_id title")
+  return places
+}
