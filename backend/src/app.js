@@ -3,6 +3,7 @@ import placeRoutes from "./modules/place/place.routes.js"
 import userRoutes from "./modules/user/user.routes.js"
 import reviewRoutes from "./modules/review/review.routes.js"
 import uploadRoutes from "./modules/images/upload.routes.js"
+import postRoutes from "./modules/post/post.routes.js"
 import adminRoutes from "./modules/admin/admin.routes.js"
 import dotenv from "dotenv"
 import cors from "cors"
@@ -23,6 +24,7 @@ app.use('/api/places', placeRoutes)
 app.use('/api/users', userRoutes)
 app.use('/api/reviews', reviewRoutes)
 app.use('/api/upload', uploadRoutes)
+app.use('/api/posts', postRoutes)
 app.use('/api/admin', adminRoutes)
 
 app.use('*splat', (req, res) => {
