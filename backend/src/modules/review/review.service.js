@@ -128,3 +128,44 @@ export const deleteReview = async (userId, placeId) => {
   return review
 }
 
+export const getAllReviews = async (limit, cursor) => {
+  const query = {}
+
+  if(cursor) {
+    const cursorReview = await Review.findById(cursor)
+
+    if(!cursorReview) {
+      throw new ApiError(400, "Invalid cursor error")
+    }
+
+    query.$or = [
+      { createdAt: { $lt: cursorReview.createdAt } },
+      {
+        createdAt: cursorReview.createdAt,
+        _id: { $lt: cursorReview._id }
+      }
+    ]
+
+  }
+
+  const reviews = await Review.find(query)
+  .sort({createdAt: -1, _id: -1})
+  .limit(limit + 1)
+  .lean()
+
+  const hasMore = reviews.length > limit
+
+  if(hasMore) {
+    reviews.pop()
+  }
+
+  const nextCursor = hasMore
+  ? reviews[reviews.length - 1]._id
+  : null
+
+  return {
+    reviews,
+    hasMore,
+    nextCursor
+  }
+}

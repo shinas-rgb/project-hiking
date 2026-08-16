@@ -30,3 +30,11 @@ export const deleteReviewController = asyncHandler(async (req, res) => {
     new ApiResponse(200, result, "Review deleted")
   )
 })
+
+export const getAllReviewsController = asyncHandler(async (req, res) => {  
+  const {cursor, limit} = req.query
+  const result = await reviewService.getAllReviews(Math.min((Number(limit)) || 20, 50), cursor)
+  res.status(200).json(
+    new ApiResponse(200, result, "Reviews fetched")
+  )
+})
